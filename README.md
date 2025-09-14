@@ -40,7 +40,7 @@ Copyright © Sojung Park (Bei) All rights reserved.
 ## 🍀 Members
 | [![텍스트](https://avatars.githubusercontent.com/Hyun-ohohoh)](https://github.com/Hyun-ohohoh) | [![텍스트](https://avatars.githubusercontent.com/zerochani)](https://github.com/zerochani) | [![텍스트](https://avatars.githubusercontent.com/KoEunB)](https://github.com/KoEunB) | [![텍스트](https://avatars.githubusercontent.com/strfunctionk)](https://github.com/strfunctionk) 
 |:---:|:---:|:---:|:---:|
-| 나호/나현호 | 앤디/박영찬 | 비비/고은비 | 노코/박수현 |
+| 나호/나현오 | 앤디/박영찬 | 비비/고은비 | 노코/박수현 |
 
 
 <br>

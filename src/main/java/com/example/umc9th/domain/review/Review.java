@@ -27,8 +27,8 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    //리뷰는 특정 포인트 거래와 일대일 관계
-    @ManyToOne(fetch = FetchType.LAZY)
+    //구매자 리뷰 인증을 위한 Review와 PointTransaction 1:1관계 설정
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "point_transaction_id", unique = true)
     private PointTransaction pointTransaction;
 
@@ -47,6 +47,6 @@ public class Review extends BaseTimeEntity {
     private ReviewAnswer reviewAnswer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 }

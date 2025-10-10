@@ -1,4 +1,4 @@
-package com.example.umc9th.domain.user;
+package com.example.umc9th.domain.member;
 
 
 import com.example.umc9th.domain.store.Category;
@@ -14,20 +14,20 @@ import lombok.NoArgsConstructor;
         //한 명의 유저가 동일한 카테고리를 중복으로 선호할 수 없도록 유니크 제약조건 설정
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "user_category_unique",
-                        columnNames = {"user_id", "category_id"}
+                        name = "member_category_unique",
+                        columnNames = {"member_id", "category_id"}
                 )
         }
 )
-public class UserFoodPreference {
+public class MemberFoodPreference {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)

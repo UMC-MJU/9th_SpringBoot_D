@@ -1,4 +1,4 @@
-package com.example.umc9th.domain.user.enums;
+package com.example.umc9th.domain.member.enums;
 
 public enum NotificationType {
     REVIEW_ANSWERED, //내 리뷰에 답변이 달렸을 때

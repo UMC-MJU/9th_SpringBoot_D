@@ -3,7 +3,7 @@ package com.example.umc9th.domain.common;
 
 import com.example.umc9th.domain.review.Review;
 import com.example.umc9th.domain.store.Store;
-import com.example.umc9th.domain.user.Inquiry;
+import com.example.umc9th.domain.member.Inquiry;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

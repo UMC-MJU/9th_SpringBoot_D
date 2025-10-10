@@ -3,8 +3,8 @@ package com.example.umc9th.domain.review;
 import com.example.umc9th.domain.common.BaseTimeEntity;
 import com.example.umc9th.domain.common.Photo;
 import com.example.umc9th.domain.store.Store;
-import com.example.umc9th.domain.user.PointTransaction;
-import com.example.umc9th.domain.user.User;
+import com.example.umc9th.domain.member.PointTransaction;
+import com.example.umc9th.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,8 +24,8 @@ public class Review extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     //구매자 리뷰 인증을 위한 Review와 PointTransaction 1:1관계 설정
     @OneToOne(fetch = FetchType.LAZY)

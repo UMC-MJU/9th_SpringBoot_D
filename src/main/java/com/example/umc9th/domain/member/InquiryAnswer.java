@@ -1,4 +1,4 @@
-package com.example.umc9th.domain.user;
+package com.example.umc9th.domain.member;
 
 import com.example.umc9th.domain.common.BaseTimeEntity;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
-package com.example.umc9th.domain.user;
+package com.example.umc9th.domain.member;
 
 import com.example.umc9th.domain.common.BaseTimeEntity;
-import com.example.umc9th.domain.user.enums.NotificationType;
+import com.example.umc9th.domain.member.enums.NotificationType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,8 +17,8 @@ public class Notification extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @Column(nullable = false)
     private String content;

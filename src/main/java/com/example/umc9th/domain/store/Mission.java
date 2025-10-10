@@ -1,7 +1,7 @@
 package com.example.umc9th.domain.store;
 
 import com.example.umc9th.domain.common.BaseTimeEntity;
-import com.example.umc9th.domain.user.UserMission;
+import com.example.umc9th.domain.member.MemberMission;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -40,5 +40,5 @@ public class Mission extends BaseTimeEntity {
 
     //이 미션을 수행한 사용자들의 기록
     @OneToMany(mappedBy = "mission")
-    private List<UserMission> userMissions = new ArrayList<>();
+    private List<MemberMission> memberMissions = new ArrayList<>();
 }

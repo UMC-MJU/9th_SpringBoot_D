@@ -1,4 +1,4 @@
-package com.example.umc9th.domain.user;
+package com.example.umc9th.domain.member;
 
 import com.example.umc9th.domain.common.BaseTimeEntity;
 import com.example.umc9th.domain.common.Photo;
@@ -21,8 +21,8 @@ public class Inquiry extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @Column(nullable = false)
     private String title;

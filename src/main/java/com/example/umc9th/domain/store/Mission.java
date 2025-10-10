@@ -3,9 +3,7 @@ package com.example.umc9th.domain.store;
 import com.example.umc9th.domain.common.BaseTimeEntity;
 import com.example.umc9th.domain.member.MemberMission;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +12,9 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Mission extends BaseTimeEntity {
 
     @Id
@@ -39,6 +39,12 @@ public class Mission extends BaseTimeEntity {
     private LocalDateTime endDate;
 
     //이 미션을 수행한 사용자들의 기록
-    @OneToMany(mappedBy = "mission")
+    @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberMission> memberMissions = new ArrayList<>();
+
+    //현재 도전 가능한 미션인지 확인
+    public boolean isAvailable(){
+        LocalDateTime now = LocalDateTime.now();
+        return now.isAfter(this.startDate) && now.isBefore(this.endDate);
+    }
 }

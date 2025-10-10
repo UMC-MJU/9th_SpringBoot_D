@@ -1,14 +1,12 @@
-package com.example.umc9th.domain.review;
+package com.example.umc9th.domain.member.board;
 
 import com.example.umc9th.domain.common.BaseTimeEntity;
 import com.example.umc9th.domain.common.Photo;
+import com.example.umc9th.domain.member.MemberMission;
 import com.example.umc9th.domain.store.Store;
-import com.example.umc9th.domain.member.PointTransaction;
 import com.example.umc9th.domain.member.Member;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +14,9 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Review extends BaseTimeEntity {
 
     @Id
@@ -27,10 +27,9 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    //구매자 리뷰 인증을 위한 Review와 PointTransaction 1:1관계 설정
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "point_transaction_id", unique = true)
-    private PointTransaction pointTransaction;
+    //구매자 리뷰 인증
+    @OneToOne(fetch = FetchType.LAZY) @JoinColumn(name = "member_mission_id", unique = true)
+    private MemberMission memberMission;
 
     @Lob
     private String content;

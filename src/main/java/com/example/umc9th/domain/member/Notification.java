@@ -3,13 +3,13 @@ package com.example.umc9th.domain.member;
 import com.example.umc9th.domain.common.BaseTimeEntity;
 import com.example.umc9th.domain.member.enums.NotificationType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Notification extends BaseTimeEntity {
 
     @Id
@@ -27,7 +27,7 @@ public class Notification extends BaseTimeEntity {
     private String relatedUrl;
 
     @Column(nullable = false)
-    private boolean isRead = false;
+    private boolean read = false;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -35,6 +35,6 @@ public class Notification extends BaseTimeEntity {
 
     //사용자가 알림을 읽음 처리하는 메서드
     public void markAsRead(){
-        this.isRead = true;
+        this.read = true;
     }
 }

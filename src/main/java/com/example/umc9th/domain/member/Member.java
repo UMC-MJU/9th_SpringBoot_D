@@ -47,7 +47,9 @@ public class Member extends BaseTimeEntity {
 
     private LocalDate birthday;
 
-    private String address;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private com.example.umc9th.domain.common.Address address;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -110,7 +112,6 @@ public class Member extends BaseTimeEntity {
         this.socialId = null;
         this.gender = null;
         this.birthday = null;
-        this.address = null;
         this.point = 0;
     }
 

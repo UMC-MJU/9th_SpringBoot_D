@@ -38,14 +38,12 @@ public class Store extends BaseTimeEntity {
 
     private String companyName;
 
-    @Column(nullable = false)
-    private String address;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private com.example.umc9th.domain.common.Address address;
 
-    @Column(precision = 10, scale = 7)
-    private BigDecimal latitude;
-
-    @Column(precision = 10, scale = 7)
-    private BigDecimal longitude;
+    @Column(name = "average_rating")
+    private Float averageRating;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Mission> missions = new ArrayList<>();

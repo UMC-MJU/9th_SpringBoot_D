@@ -20,7 +20,12 @@ public class NotificationSetting extends BaseTimeEntity {
     private Member member;
 
     //기본적으로 모든 알림을 받는 것을 기본 값으로 설정
+    @Builder.Default
     private Boolean eventAlerts = true;
+    
+    @Builder.Default
     private Boolean reviewReplyAlerts = true;
+    
+    @Builder.Default
     private Boolean inquiryReplyAlerts = true;
 }

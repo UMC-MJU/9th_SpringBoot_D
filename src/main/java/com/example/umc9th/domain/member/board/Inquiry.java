@@ -30,6 +30,7 @@ public class Inquiry extends BaseTimeEntity {
     private String title;
 
     @Lob
+    @Basic(fetch = FetchType.LAZY) // 성능 최적화: 필요할 때만 로드
     @Column(nullable = false)
     private String content;
 
@@ -37,10 +38,10 @@ public class Inquiry extends BaseTimeEntity {
     @Column(nullable = false)
     private InquiryStatus status;
 
-    @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "inquiry", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Photo> photos = new ArrayList<>();
 
     //문의가 삭제되면 답변도 함께 삭제되도록 설정
-    @OneToOne(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "inquiry", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private InquiryAnswer inquiryAnswer;
 }

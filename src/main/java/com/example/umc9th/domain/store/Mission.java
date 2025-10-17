@@ -26,6 +26,7 @@ public class Mission extends BaseTimeEntity {
     private Store store;
 
     @Lob
+    @Basic(fetch = FetchType.LAZY) // 성능 최적화: 필요할 때만 로드
     @Column(nullable = false)
     private String description;
 
@@ -39,7 +40,7 @@ public class Mission extends BaseTimeEntity {
     private LocalDateTime endDate;
 
     //이 미션을 수행한 사용자들의 기록
-    @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "mission", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberMission> memberMissions = new ArrayList<>();
 
     //현재 도전 가능한 미션인지 확인

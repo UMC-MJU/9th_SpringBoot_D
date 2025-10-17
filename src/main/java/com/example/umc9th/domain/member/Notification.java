@@ -27,6 +27,7 @@ public class Notification extends BaseTimeEntity {
     private String relatedUrl;
 
     @Column(nullable = false)
+    @Builder.Default
     private boolean read = false;
 
     @Enumerated(EnumType.STRING)

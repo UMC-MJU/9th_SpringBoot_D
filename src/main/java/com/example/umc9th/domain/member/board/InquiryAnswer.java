@@ -26,6 +26,7 @@ public class InquiryAnswer extends BaseTimeEntity {
     private Member admin;
 
     @Lob
+    @Basic(fetch = FetchType.LAZY) // 성능 최적화: 필요할 때만 로드
     @Column(nullable = false)
     private String content;
 }

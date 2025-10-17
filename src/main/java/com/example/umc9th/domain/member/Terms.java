@@ -15,7 +15,9 @@ public class Terms extends BaseTimeEntity {
     private Long id;
     @Column(nullable = false)
     private String title;
-    @Lob @Column(nullable = false)
+    @Lob
+    @Basic(fetch = FetchType.LAZY) // 성능 최적화: 필요할 때만 로드
+    @Column(nullable = false)
     private String content;
     @Column(nullable = false)
     private boolean isMandatory;

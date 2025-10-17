@@ -32,17 +32,18 @@ public class Review extends BaseTimeEntity {
     private MemberMission memberMission;
 
     @Lob
+    @Basic(fetch = FetchType.LAZY) // 성능 최적화: 필요할 때만 로드
     private String content;
 
     @Column(nullable = false)
     private Integer rating;
 
     //리뷰가 삭제되면 관련된 사진도 함께 DB에서 삭제
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Photo> photos = new ArrayList<>();
 
     //리뷰에 달린 사장님 답변과의 1:1관계
-    @OneToOne(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private ReviewAnswer reviewAnswer;
 
     @ManyToOne(fetch = FetchType.LAZY)

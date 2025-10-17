@@ -30,7 +30,8 @@ public class Store extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
-    @Lob //긴 텍스트를 위한 설정
+    @Lob
+    @Basic(fetch = FetchType.LAZY) // 성능 최적화: 필요할 때만 로드
     private String description;
 
     @Column(nullable = false)
@@ -45,13 +46,13 @@ public class Store extends BaseTimeEntity {
     @Column(name = "average_rating")
     private Float averageRating;
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Mission> missions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Photo> photos = new ArrayList<>();
 
     @ManyToOne(fetch=FetchType.LAZY)

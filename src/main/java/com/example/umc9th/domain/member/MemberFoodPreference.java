@@ -1,6 +1,6 @@
 package com.example.umc9th.domain.member;
 
-
+import com.example.umc9th.domain.common.BaseTimeEntity;
 import com.example.umc9th.domain.store.Category;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,7 +19,7 @@ import lombok.*;
                 )
         }
 )
-public class MemberFoodPreference {
+public class MemberFoodPreference extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

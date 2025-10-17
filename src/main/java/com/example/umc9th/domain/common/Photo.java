@@ -10,7 +10,6 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Photo extends BaseTimeEntity{
 
     @Id

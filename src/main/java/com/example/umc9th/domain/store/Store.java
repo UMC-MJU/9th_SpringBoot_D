@@ -55,7 +55,7 @@ public class Store extends BaseTimeEntity {
     private List<Photo> photos = new ArrayList<>();
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "member_id")
     private Member owner;
 
     //가게의 평균 평점 계산 로직

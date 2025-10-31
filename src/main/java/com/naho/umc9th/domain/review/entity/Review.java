@@ -1,5 +1,6 @@
 package com.naho.umc9th.domain.review.entity;
 
+import com.naho.umc9th.domain.common.entity.BaseEntity;
 import com.naho.umc9th.domain.member.entity.Member;
 import com.naho.umc9th.domain.store.entity.Store;
 import jakarta.persistence.*;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "review")
 @EntityListeners(AuditingEntityListener.class)
-public class Review {
+public class Review extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

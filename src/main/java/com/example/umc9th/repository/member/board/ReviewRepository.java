@@ -14,6 +14,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long>{
     @Query("SELECT COUNT(r) > 0 FROM Review r WHERE r.member.id = :memberId AND r.store.id = :storeId")
     boolean existsByMemberIdAndStoreId(@Param("memberId") Long memberId, @Param("storeId") Long storeId);
 
-    //작성한 리뷰 개수 조회(메서드 생성 방식)
+    //작성한 리뷰 개수 조회(@Query 어노테이션 사용)
+    @Query("SELECT COUNT(r) FROM Review r WHERE r.member.id = :memberId")
     long countByMemberId(Long memberId);
 }

@@ -31,7 +31,7 @@ public class Review {
     private Store store;
 
     @Column(name = "rating", nullable = false)
-    private Float rating;
+    private Double rating;
 
     @Column(name = "content")
     private String content;

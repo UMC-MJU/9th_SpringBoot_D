@@ -1,5 +1,6 @@
 package com.naho.umc9th.domain.mission.entity;
 
+import com.naho.umc9th.domain.common.entity.BaseEntity;
 import com.naho.umc9th.domain.member.entity.Member;
 import com.naho.umc9th.domain.mission.enums.MissionStatus;
 import jakarta.persistence.*;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "member_mission")
 @EntityListeners(AuditingEntityListener.class)
-public class MemberMission {
+public class MemberMission extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

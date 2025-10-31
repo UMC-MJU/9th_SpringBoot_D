@@ -69,9 +69,6 @@ public class Member extends BaseEntity {
     @Column(name = "inactive_at")
     private LocalDateTime inactiveAt;
 
-    @Column(name = "delete_at")
-    private LocalDateTime deleteAt;
-
     // 회원이 참여한 미션 목록 — 회원 삭제 시 미션 매핑도 함께 삭제
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberMission> memberMissions = new ArrayList<>();

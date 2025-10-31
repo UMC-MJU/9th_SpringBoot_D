@@ -24,7 +24,7 @@ public class FoodCategory {
     @Enumerated(EnumType.STRING)
     private FoodCategoryName foodCategoryName;
 
-    @OneToMany(mappedBy = "foodCategory")
+    @OneToMany(mappedBy = "foodCategory", fetch = FetchType.LAZY)
     private List<StoreCategory> storeCategoryList = new ArrayList<>();
 
 }

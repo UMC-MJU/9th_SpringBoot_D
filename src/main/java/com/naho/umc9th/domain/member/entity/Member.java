@@ -1,5 +1,6 @@
 package com.naho.umc9th.domain.member.entity;
 
+import com.naho.umc9th.domain.common.entity.BaseEntity;
 import com.naho.umc9th.domain.member.enums.Gender;
 import com.naho.umc9th.domain.member.enums.Provider;
 import com.naho.umc9th.domain.member.enums.MemberStatus;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "member")
 @EntityListeners(AuditingEntityListener.class)
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,13 +60,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 
 
 

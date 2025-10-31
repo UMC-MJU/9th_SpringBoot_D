@@ -40,9 +40,5 @@ public class Review {
     @OneToOne(mappedBy = "review")
     private ReviewComment reviewComment;
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
 
 }

@@ -34,9 +34,6 @@ public class MemberMission {
     @Enumerated(EnumType.STRING)
     private MissionStatus status;
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
 
     @Column(name = "completed_at")
     private LocalDateTime completedAt;

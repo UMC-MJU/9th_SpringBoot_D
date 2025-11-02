@@ -32,12 +32,15 @@ public class Inquiry extends BaseEntity {
     private InquiryType inquiryType;
 
     @Column(name = "recived", nullable = true)
+    @Builder.Default
     private Boolean isRecieved = false;
 
     @OneToMany(mappedBy = "inquiry")
+    @Builder.Default
     private List<InquiryReply> replyList = new ArrayList<>();
 
     @OneToMany(mappedBy = "inquiry")
+    @Builder.Default
     private List<InquiryImage> imageList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

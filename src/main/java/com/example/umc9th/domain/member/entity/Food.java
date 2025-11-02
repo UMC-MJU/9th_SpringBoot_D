@@ -25,5 +25,6 @@ public class Food {
     private FoodName name;
 
     @OneToMany(mappedBy = "food", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<MemberFood> memberFoodList = new ArrayList<>();
 }

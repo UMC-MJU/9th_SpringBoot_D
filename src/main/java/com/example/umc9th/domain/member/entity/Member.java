@@ -29,6 +29,7 @@ public class Member extends BaseEntity {
     private String email;
 
     @Column(name = "phone", nullable = true)
+    @Builder.Default
     private String phone = null;
 
     @Column(name = "name", length = 20,  nullable = false)
@@ -51,18 +52,23 @@ public class Member extends BaseEntity {
     private SocialType socialType;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<MemberFood> memberFoodList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<MemberTerm> memberTermList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<Notification> notificationList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<NotificationSetting> notificationSettingList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<ConversionHistory> conversionHistoryList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

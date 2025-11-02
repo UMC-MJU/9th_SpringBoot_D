@@ -25,5 +25,6 @@ public class Term {
     private TermName name;
 
     @OneToMany(mappedBy = "term", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<MemberTerm> memberTermList = new ArrayList<>();
 }

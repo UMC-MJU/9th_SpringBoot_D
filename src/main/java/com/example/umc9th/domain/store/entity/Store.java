@@ -22,9 +22,11 @@ public class Store {
     private String name;
 
     @OneToMany(mappedBy = "store")
+    @Builder.Default
     private List<Category> categoryList = new ArrayList<>();
 
     @OneToMany(mappedBy = "store")
+    @Builder.Default
     private List<BusinessHour> businessHourList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

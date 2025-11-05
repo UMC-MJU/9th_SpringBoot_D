@@ -18,8 +18,8 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
      * 현재 선택된 지역에서 도전 가능한 미션 목록을 조회
      */
     @Query("SELECT m FROM Mission m " +
-           "JOIN FETCH m.store s " +
-           "JOIN FETCH s.address a " +
+           "JOIN m.store s " +
+           "JOIN s.address a " +
            "WHERE a.addressName = :regionName " +
            "AND :now >= m.startDate " +
            "AND :now <= m.endDate " +

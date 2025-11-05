@@ -8,6 +8,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.BatchSize;
 
 
 @Entity
@@ -41,6 +42,7 @@ public class Mission extends BaseTimeEntity {
 
     //이 미션을 수행한 사용자들의 기록
     @OneToMany(mappedBy = "mission", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 100)
     private List<MemberMission> memberMissions = new ArrayList<>();
 
     //현재 도전 가능한 미션인지 확인

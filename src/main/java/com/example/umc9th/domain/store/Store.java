@@ -7,9 +7,9 @@ import com.example.umc9th.domain.member.board.Review;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.BatchSize;
 
 
 @Entity
@@ -47,12 +47,15 @@ public class Store extends BaseTimeEntity {
     private Float averageRating;
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 100)
     private List<Mission> missions = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
+    @BatchSize(size = 100)
     private List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 100)
     private List<Photo> photos = new ArrayList<>();
 
     @ManyToOne(fetch=FetchType.LAZY)

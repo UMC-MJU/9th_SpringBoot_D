@@ -2,12 +2,13 @@ package com.example.umc9th.domain.review.repository;
 
 import com.example.umc9th.domain.member.entity.Member;
 import com.example.umc9th.domain.review.entity.Review;
+import com.example.umc9th.domain.review.repository.querydsl.ReviewQueryDsl;
 import com.example.umc9th.domain.store.entity.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewQueryDsl {
 
     // 특정 가게(Store)에 작성된 모든 리뷰 (삭제되지 않은 것만)
     List<Review> findByStoreAndDeletedAtIsNull(Store store);

@@ -22,14 +22,14 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/search")
-    public List<ReviewDto> searchReview(
+    public Page<ReviewDto> searchReview(
             @RequestParam(required = false) String query,
             @RequestParam(required = false) String type,
             PageRequest pageRequest
     ){
         Pageable pageable = pageRequest.of();
 
-        List<ReviewDto> result = reviewQueryService.searchReview(query, type, pageable);
+        Page<ReviewDto> result = reviewQueryService.searchReview(query, type, pageable);
         return result;
     }
 }

@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface ReviewQueryDsl {
 
-    List<ReviewDto> searchReview(Predicate predicate, Pageable pageable);
+    Page<ReviewDto> searchReview(Predicate predicate, Pageable pageable);
 }

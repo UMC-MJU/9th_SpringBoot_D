@@ -28,7 +28,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
     private final EntityManager em;
 
     @Override
-    public List<ReviewDto> searchReview(Predicate predicate, Pageable pageable) {
+    public Page<ReviewDto> searchReview(Predicate predicate, Pageable pageable) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
 
         QReview review = QReview.review;
@@ -36,16 +36,17 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
         QAddress address = QAddress.address1;
         QReviewImage reviewImage = QReviewImage.reviewImage;
 
-        return queryFactory
+        List<ReviewDto> content = queryFactory
                 .selectFrom(review)
                 .leftJoin(review.store, store)
                 .leftJoin(review.imageList, reviewImage)
                 .leftJoin(store.address, address)
                 .where(predicate)
-                //.offset(pageable.getOffset())
-                //.limit(pageable.getPageSize())
+                // 💡 페이징 적용: offset, limit
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .transform(
-                        // review.id를 그룹 기준으로 하여 중복되는 review 엔티티 행을 하나의 그룹으로 묶음
+                        // review.id를 그룹 기준으로 하여 DTO로 변환
                         groupBy(review.id).as(
                                 Projections.constructor(
                                         ReviewDto.class,
@@ -63,5 +64,13 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
                         )
                 )
                 .values().stream().collect(Collectors.toList());
+
+        Long totalCount = queryFactory
+                .select(review.id.countDistinct())
+                .from(review)
+                .where(predicate)
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, totalCount);
     }
 }

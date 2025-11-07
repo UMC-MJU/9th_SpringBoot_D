@@ -22,7 +22,7 @@ public class ReviewQueryService {
     private final ReviewRepository reviewRepository;
     //private final ReviewMapper reviewMapper;
 
-    public Page<ReviewDto> searchReview(String query, String type, Pageable pageable) {
+    public List<ReviewDto> searchReview(String query, String type, Pageable pageable) {
         QReview review = QReview.review;
         QAddress address = QAddress.address1;
 
@@ -45,7 +45,10 @@ public class ReviewQueryService {
                 builder.and(review.star.goe(Float.parseFloat(secondQuery)));
             }
         }
-        Page<Review> reviewPage = reviewRepository.searchReview(builder, pageable);
-        return reviewPage.map(ReviewDto::fromEntity);
+        List<ReviewDto> reviewList = reviewRepository.searchReview(builder, pageable);
+        return reviewList;
+//                .stream()
+//                .map(ReviewDto::fromEntity) // 임시 변환 메서드 사용 (실제로는 Mapper 사용 권장)
+//                .collect(Collectors.toList());
     }
 }

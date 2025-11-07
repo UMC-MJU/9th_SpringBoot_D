@@ -2,15 +2,12 @@ package com.example.umc9th.domain.store.dto;
 
 import com.example.umc9th.domain.store.entity.Store;
 import com.example.umc9th.global.entity.Address;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StoreDto {
     private Long storeId;
     private String name;

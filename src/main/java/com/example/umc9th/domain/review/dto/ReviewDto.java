@@ -1,5 +1,6 @@
 package com.example.umc9th.domain.review.dto;
 
+import com.example.umc9th.domain.member.dto.MemberDto;
 import com.example.umc9th.domain.review.entity.Review;
 import com.example.umc9th.domain.store.dto.StoreDto;
 import com.querydsl.core.annotations.QueryProjection;
@@ -18,6 +19,7 @@ public class ReviewDto {
     private Integer star;
 
     private StoreDto storeDto;
+    private MemberDto memberDto;
     private List<ReviewImageDto> reviewImageList;
 
     @QueryProjection
@@ -40,6 +42,7 @@ public class ReviewDto {
                 .comment(review.getComment())
                 .star(review.getStar())
                 .storeDto(StoreDto.fromEntity(review.getStore()))
+                .memberDto(MemberDto.fromEntity(review.getMember()))
                 .reviewImageList(images)
                 .build();
     }
@@ -50,6 +53,7 @@ public class ReviewDto {
                 .comment(this.comment)
                 .star(this.star)
                 .store(this.storeDto.toEntity())
+                .member(this.memberDto.toEntity())
                 .build();
     }
 }

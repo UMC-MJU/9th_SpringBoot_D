@@ -1,10 +1,10 @@
 package com.example.umc9th.domain.review.repository;
 
+import com.example.umc9th.domain.member.entity.QMember;
 import com.example.umc9th.domain.review.dto.ReviewDto;
 import com.example.umc9th.domain.review.dto.ReviewImageDto;
 import com.example.umc9th.domain.review.entity.QReview;
 import com.example.umc9th.domain.review.entity.QReviewImage;
-import com.example.umc9th.domain.review.entity.Review;
 import com.example.umc9th.domain.store.entity.QStore;
 import com.example.umc9th.global.entity.QAddress;
 import com.querydsl.core.types.Predicate;
@@ -35,18 +35,18 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
         QStore store = QStore.store;
         QAddress address = QAddress.address1;
         QReviewImage reviewImage = QReviewImage.reviewImage;
+        QMember member = QMember.member;
 
         List<ReviewDto> content = queryFactory
                 .selectFrom(review)
                 .leftJoin(review.store, store)
                 .leftJoin(review.imageList, reviewImage)
                 .leftJoin(store.address, address)
+                .leftJoin(review.member, member)
                 .where(predicate)
-                // 💡 페이징 적용: offset, limit
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .transform(
-                        // review.id를 그룹 기준으로 하여 DTO로 변환
                         groupBy(review.id).as(
                                 Projections.constructor(
                                         ReviewDto.class,
@@ -68,6 +68,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
         Long totalCount = queryFactory
                 .select(review.id.countDistinct())
                 .from(review)
+                .leftJoin(review.member, member)
                 .where(predicate)
                 .fetchOne();
 

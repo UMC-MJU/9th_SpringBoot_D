@@ -33,10 +33,12 @@ public class ReviewController {
     @GetMapping("/user/{memberId}/reviews/search") // 인증 인가 처리가 없어 일단 Path로 memberId 처리
     public Page<ReviewDto> searchReviewByMemberId(
             @PathVariable Long memberId,
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false) String type,
             PageRequest pageRequest
     ){
         Pageable pageable = pageRequest.of();
-        Page<ReviewDto> result = reviewQueryService.searchReviewByMemberId(memberId, pageable);
+        Page<ReviewDto> result = reviewQueryService.searchReviewByMemberId(memberId, query, type, pageable);
         return result;
     }
 }

@@ -26,7 +26,7 @@ public class Notification extends BaseTimeEntity {
     //알림 클릭 시 이동할 URL
     private String relatedUrl;
 
-    @Column(nullable = false)
+    @Column(name="is_read",nullable = false)
     @Builder.Default
     private boolean read = false;
 

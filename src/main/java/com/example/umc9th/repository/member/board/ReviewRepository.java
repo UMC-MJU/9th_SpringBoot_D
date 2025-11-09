@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.umc9th.domain.member.board.Review;
 
 @Repository
-public interface ReviewRepository extends JpaRepository<Review, Long>{
+public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewQueryDsl{
     
     //리뷰 작성 중복 체크용(@Query 어노테이션 사용)
     @Query("SELECT COUNT(r) > 0 FROM Review r WHERE r.member.id = :memberId AND r.store.id = :storeId")

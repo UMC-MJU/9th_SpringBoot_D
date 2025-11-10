@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.umc9th.domain.member.board.Review;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -19,7 +20,9 @@ import static com.example.umc9th.domain.member.board.QReview.review;
 import static com.example.umc9th.domain.store.QStore.store;
 import static com.example.umc9th.domain.member.board.QReviewAnswer.reviewAnswer;
 import static com.example.umc9th.domain.common.QPhoto.photo;
-
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.example.umc9th.dto.SearchReviewRequest;
 @Repository
 public class ReviewQueryDslImpl implements ReviewQueryDsl{
 
@@ -28,6 +31,58 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl{
 
     public ReviewQueryDslImpl(EntityManager entityManager){
         this.queryFactory = new JPAQueryFactory(entityManager);
+    }
+
+    @Override
+    public List<Review> searchReview(SearchReviewRequest request){
+        BooleanBuilder builder = new BooleanBuilder();
+        String query = request.getQuery();
+        String type = request.getType();
+
+            if("location".equals(type)){
+                builder.and(store.address.addressName.contains(query));
+            }else if("star".equals(type) || "rating".equals(type)){
+                try{
+                    Float rating = Float.parseFloat(query);
+                    builder.and(review.rating.goe(rating.intValue()));
+                }catch(NumberFormatException e){
+                }
+            }else if("both".equals(type)){
+                String[] queries = query.split("&");
+                if(queries.length >=2){
+                    String firstQuery = queries[0];
+                    String secondQuery = queries[1];
+
+                    builder.and(store.address.addressName.contains(firstQuery));
+                    try{
+                        Float rating = Float.parseFloat(secondQuery);
+                        builder.and(review.rating.goe(rating.intValue()));
+                    }catch(NumberFormatException e){
+                    }
+                }
+            }else if("storeName".equals(type)){
+                builder.and(store.name.contains(query));
+            }
+
+            builder.and(storeIdCondition(request.getStoreId()));
+            builder.and(storeNameCondition(request.getStoreName()));
+            builder.and(ratingRangeCondition(request.getMinRating(), request.getMaxRating()));
+
+            OrderSpecifier<?>[] orderSpecifiers = createOrderSpecifiers(
+                request.getSortBy(), 
+                request.getSortDirection()
+            );
+
+            List<Review> reviews = queryFactory
+                .selectFrom(review)
+                .join(review.store, store).fetchJoin()
+                .leftJoin(review.reviewAnswer, reviewAnswer).fetchJoin()
+                .leftJoin(review.photos, photo).fetchJoin()
+                .where(builder)
+                .orderBy(orderSpecifiers)
+                .fetch();
+            return reviews;
+
     }
 
     @Override
@@ -68,6 +123,35 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl{
             .fetchOne();
 
         return new PageImpl<>(reviews, pageable, total != null ? total : 0);
+    }
+
+
+    //동적 정렬 생성 메서드
+    private OrderSpecifier<?>[] createOrderSpecifiers(String sortBy, String sortDirection){
+        Order order = "asc".equalsIgnoreCase(sortDirection)
+            ? Order.ASC:Order.DESC;
+
+        if("rating".equalsIgnoreCase(sortBy)){
+            return new OrderSpecifier[]{
+                new OrderSpecifier<>(
+                    order, review.rating
+                ),
+                new OrderSpecifier<>(Order.DESC, review.createdAt)
+            };
+        }else if ("storeRating".equalsIgnoreCase(sortBy)){
+            return new OrderSpecifier[]{
+                new OrderSpecifier<>(
+                    order, store.averageRating
+                ),
+                new OrderSpecifier<>(Order.DESC, review.createdAt)
+            };
+        }else{
+            return new OrderSpecifier[]{
+                new OrderSpecifier<>(
+                    Order.DESC, review.createdAt
+                )
+            };
+        }
     }
 
     //가게 ID 조건

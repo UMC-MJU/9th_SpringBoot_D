@@ -4,30 +4,23 @@ import com.example.umc9th.domain.member.dto.MemberDto;
 import com.example.umc9th.domain.review.entity.Review;
 import com.example.umc9th.domain.store.dto.StoreDto;
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Builder
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ReviewDto {
-    private Long reviewId;
-    private String comment;
-    private Integer star;
+public record ReviewDto (
+        Long reviewId,
+        String comment,
+        Integer star,
+        StoreDto storeDto,
+        MemberDto memberDto,
+        List<ReviewImageDto> reviewImageList
+){
 
-    private StoreDto storeDto;
-    private MemberDto memberDto;
-    private List<ReviewImageDto> reviewImageList;
 
     @QueryProjection
     public ReviewDto(Long reviewId, String comment, Integer star, List<ReviewImageDto> reviewImageList) {
-        this.reviewId = reviewId;
-        this.comment = comment;
-        this.star = star;
-        this.reviewImageList = reviewImageList;
+        this(reviewId, comment, star, null, null, reviewImageList);
     }
 
     public static ReviewDto fromEntity(Review review) {
@@ -36,15 +29,14 @@ public class ReviewDto {
                         .map(ReviewImageDto::fromEntity)
                         .collect(Collectors.toList())
                 : null;
-
-        return ReviewDto.builder()
-                .reviewId(review.getId())
-                .comment(review.getComment())
-                .star(review.getStar())
-                .storeDto(StoreDto.fromEntity(review.getStore()))
-                .memberDto(MemberDto.fromEntity(review.getMember()))
-                .reviewImageList(images)
-                .build();
+        return new ReviewDto(
+                review.getId(),
+                review.getComment(),
+                review.getStar(),
+                StoreDto.fromEntity(review.getStore()),
+                MemberDto.fromEntity(review.getMember()),
+                images
+        );
     }
 
     public Review toEntity() {

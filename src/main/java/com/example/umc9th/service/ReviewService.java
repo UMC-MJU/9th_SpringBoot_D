@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import com.example.umc9th.dto.ReviewResponse;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.example.umc9th.dto.MyReviewRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -62,23 +63,9 @@ public class ReviewService {
     }
 
     //내가 작성한 리뷰 조회(가게별, 별점별 필터링)
-    public Page<ReviewResponse> getMyReviews(
-        Long memberId,
-        Long storeId,
-        String storeName,
-        Integer minRating,
-        Integer maxRating,
-        Pageable pageable
-    ){
+    public Page<ReviewResponse> getMyReviews(MyReviewRequest request, Pageable pageable){
         //동적 쿼리 실행
-        Page<Review> reviewPage = reviewRepository.findMyReviews(
-            memberId,
-            storeId,
-            storeName,
-            minRating,
-            maxRating,
-            pageable
-        );
+        Page<Review> reviewPage = reviewRepository.findMyReviews(request,pageable);
 
         List<ReviewResponse> reviewResponses = reviewPage.getContent().stream()
             .map(this::convertToResponse)
@@ -106,23 +93,24 @@ public class ReviewService {
                 .build())
             .collect(Collectors.toList());
 
-        ReviewResponse.ReviewAnswerInfo reviewAnswerInfo = null;
+        ReviewResponse.ReplyInfo replyInfo = null;
         if(review.getReviewAnswer() != null){
-            reviewAnswerInfo = ReviewResponse.ReviewAnswerInfo.builder()
-                .reviewAnswerId(review.getReviewAnswer().getId())
+            replyInfo = ReviewResponse.ReplyInfo.builder()
+                .id(review.getReviewAnswer().getId())
                 .content(review.getReviewAnswer().getContent())
                 .createdAt(review.getReviewAnswer().getCreatedAt())
                 .build();
         }
 
         return ReviewResponse.builder()
-            .reviewId(review.getId())
+            .id(review.getId())
             .content(review.getContent())
+            .star(review.getRating() != null ? review.getRating().floatValue() : null)
             .rating(review.getRating())
+            .reply(replyInfo)
             .createdAt(review.getCreatedAt())
             .store(storeInfo)
             .photos(photoInfos)
-            .reviewAnswer(reviewAnswerInfo)
             .build();
     }
 

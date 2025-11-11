@@ -13,14 +13,16 @@ import java.util.List;
 @AllArgsConstructor
 public class ReviewResponse {
 
-    private Long reviewId;
+    private Long id;
     private String content;
+    private Float star;
+    private ReplyInfo reply;
+
     private Integer rating;
     private LocalDateTime createdAt;
-
     private StoreInfo store;
     private List<PhotoInfo> photos;
-    private ReviewAnswerInfo reviewAnswer;
+    
 
     @Getter
     @Builder
@@ -44,8 +46,8 @@ public class ReviewResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class ReviewAnswerInfo {
-        private Long reviewAnswerId;
+    public static class ReplyInfo {
+        private Long id;
         private String content;
         private LocalDateTime createdAt;
     }

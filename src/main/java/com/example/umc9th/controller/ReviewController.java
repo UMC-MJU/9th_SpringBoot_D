@@ -17,7 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.domain.Sort;
 import com.example.umc9th.service.ReviewQueryService;
 import java.util.List;
-
+import com.example.umc9th.dto.MyReviewRequest;
 @RestController
 @RequestMapping("/api/reviews")
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class ReviewController {
     private final ReviewQueryService reviewQueryService;
 
     //검색 - 별점순 필터링 및 가게별 조건 추가
-    @GetMapping("/reviews/search")
+    @GetMapping("/search")
     public List<Review> searchReview(
             @RequestParam String query,
             @RequestParam String type,
@@ -59,15 +59,20 @@ public class ReviewController {
         @RequestParam(required = false) String storeName,
         @RequestParam(required = false) Integer minRating,
         @RequestParam(required = false) Integer maxRating,
+        @RequestParam(required = false) String sortBy,
+        @RequestParam(required = false) String sortDirection,
         @PageableDefault(size=10, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ){
-        return ResponseEntity.ok(reviewService.getMyReviews(
-            memberId,
-            storeId,
-            storeName,
-            minRating,
-            maxRating,
-            pageable
-        ));
+        MyReviewRequest request = MyReviewRequest.builder()
+            .memberId(memberId)
+            .storeId(storeId)
+            .storeName(storeName)
+            .minRating(minRating)
+            .maxRating(maxRating)
+            .sortBy(sortBy)
+            .sortDirection(sortDirection)
+            .build();
+
+        return ResponseEntity.ok(reviewService.getMyReviews(request, pageable));
     }
 }

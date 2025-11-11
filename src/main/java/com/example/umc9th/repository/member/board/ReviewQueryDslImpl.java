@@ -19,10 +19,10 @@ import org.springframework.util.StringUtils;
 import static com.example.umc9th.domain.member.board.QReview.review;
 import static com.example.umc9th.domain.store.QStore.store;
 import static com.example.umc9th.domain.member.board.QReviewAnswer.reviewAnswer;
-import static com.example.umc9th.domain.common.QPhoto.photo;
+import static com.example.umc9th.domain.common.QPhoto.photo;  
 import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
 import com.example.umc9th.dto.SearchReviewRequest;
+import com.example.umc9th.dto.MyReviewRequest;
 @Repository
 public class ReviewQueryDslImpl implements ReviewQueryDsl{
 
@@ -86,20 +86,15 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl{
     }
 
     @Override
-    public Page<Review> findMyReviews(
-        Long memberId,
-        Long storeId,
-        String storeName,
-        Integer minRating,
-        Integer maxRating,
-        Pageable pageable
-    ){
+    public Page<Review> findMyReviews(MyReviewRequest request, Pageable pageable){
         BooleanBuilder builder = new BooleanBuilder();
 
-        builder.and(review.member.id.eq(memberId));
-        builder.and(storeIdCondition(storeId));
-        builder.and(storeNameCondition(storeName));
-        builder.and(ratingRangeCondition(minRating, maxRating));
+        builder.and(review.member.id.eq(request.getMemberId()));
+        builder.and(storeIdCondition(request.getStoreId()));
+        builder.and(storeNameCondition(request.getStoreName()));
+        builder.and(ratingRangeCondition(request.getMinRating(), request.getMaxRating()));
+
+        OrderSpecifier<?>[] orderSpecifiers = createOrderSpecifiers(request.getSortBy(), request.getSortDirection());
 
         List<Review> reviews = queryFactory
             .selectFrom(review)
@@ -107,7 +102,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl{
             .leftJoin(review.reviewAnswer, reviewAnswer).fetchJoin()
             .leftJoin(review.photos, photo).fetchJoin()
             .where(builder)
-            .orderBy(review.createdAt.desc())
+            .orderBy(orderSpecifiers)
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .distinct() //중복 제거

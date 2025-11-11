@@ -1,4 +1,4 @@
-package com.example.umc9th.global.entity;
+package com.example.umc9th.global.config;
 import lombok.Setter;
 import org.springframework.data.domain.Sort.Direction;
 

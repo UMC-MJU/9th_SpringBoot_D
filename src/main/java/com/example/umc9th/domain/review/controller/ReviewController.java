@@ -2,7 +2,7 @@ package com.example.umc9th.domain.review.controller;
 
 import com.example.umc9th.domain.review.dto.ReviewDto;
 import com.example.umc9th.domain.review.service.ReviewQueryService;
-import com.example.umc9th.global.entity.PageRequest;
+import com.example.umc9th.global.config.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;

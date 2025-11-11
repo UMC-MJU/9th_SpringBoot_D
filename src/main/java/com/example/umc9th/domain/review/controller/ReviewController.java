@@ -2,6 +2,8 @@ package com.example.umc9th.domain.review.controller;
 
 import com.example.umc9th.domain.review.dto.ReviewDto;
 import com.example.umc9th.domain.review.service.ReviewQueryService;
+import com.example.umc9th.global.apiPayload.ApiResponse;
+import com.example.umc9th.global.apiPayload.code.GeneralSuccessCode;
 import com.example.umc9th.global.config.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,26 +21,29 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/search")
-    public Page<ReviewDto> searchReview(
+    public ApiResponse<Page<ReviewDto>> searchReview(
             @RequestParam(required = false) String query,
             @RequestParam(required = false) String type,
             PageRequest pageRequest
-    ){
+    ) throws Exception {
+        GeneralSuccessCode code = GeneralSuccessCode.OK;
         Pageable pageable = pageRequest.of();
 
         Page<ReviewDto> result = reviewQueryService.searchReview(query, type, pageable);
-        return result;
+        return ApiResponse.onSuccess(code, result);
     }
 
     @GetMapping("/user/{memberId}/reviews/search") // 인증 인가 처리가 없어 일단 Path로 memberId 처리
-    public Page<ReviewDto> searchReviewByMemberId(
+    public ApiResponse<Page<ReviewDto>> searchReviewByMemberId(
             @PathVariable Long memberId,
             @RequestParam(required = false) String query,
             @RequestParam(required = false) String type,
             PageRequest pageRequest
-    ){
+    ) throws Exception {
+        GeneralSuccessCode code = GeneralSuccessCode.OK;
         Pageable pageable = pageRequest.of();
+
         Page<ReviewDto> result = reviewQueryService.searchReviewByMemberId(memberId, query, type, pageable);
-        return result;
+        return ApiResponse.onSuccess(code, result);
     }
 }

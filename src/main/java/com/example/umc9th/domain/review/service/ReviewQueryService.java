@@ -4,6 +4,8 @@ package com.example.umc9th.domain.review.service;
 import com.example.umc9th.domain.member.entity.QMember;
 import com.example.umc9th.domain.review.dto.ReviewDto;
 import com.example.umc9th.domain.review.entity.QReview;
+import com.example.umc9th.domain.review.exception.ReviewException;
+import com.example.umc9th.domain.review.exception.code.ReviewErrorCode;
 import com.example.umc9th.domain.review.repository.ReviewRepository;
 import com.example.umc9th.domain.store.entity.QStore;
 import com.example.umc9th.global.entity.QAddress;
@@ -27,6 +29,10 @@ public class ReviewQueryService {
         BooleanBuilder builder = new BooleanBuilder();
 
         if(type != null) {
+            if(query == null) {
+                throw new ReviewException(ReviewErrorCode.QUERY_EXCEPTION);
+            }
+
             if (type.equals("address")) {
                 builder.and(address.sido.contains((query)));
             }
@@ -65,6 +71,9 @@ public class ReviewQueryService {
         builder.and(member.id.eq(memberId));
 
         if(type != null) {
+            if(query == null) {
+                throw new ReviewException(ReviewErrorCode.QUERY_EXCEPTION);
+            }
             if (type.equals("name")) {
                 builder.and(store.name.contains((query)));
             }

@@ -80,6 +80,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl{
                 .leftJoin(review.photos, photo).fetchJoin()
                 .where(builder)
                 .orderBy(orderSpecifiers)
+                .distinct()
                 .fetch();
             return reviews;
 

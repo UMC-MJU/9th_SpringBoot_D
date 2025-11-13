@@ -6,9 +6,9 @@ import com.example.umc9th.domain.review.repository.ReviewRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +16,7 @@ public class ReviewQueryService {
 
     private final ReviewRepository reviewRepository;
 
-    public List<Review> getMyFilteredReviews(Long memberId, String storeName, Integer star) {
+    public Page<Review> getMyFilteredReviews(Long memberId, String storeName, Integer star, Pageable pageable) {
         // Q클래스 정의
         QReview review = QReview.review;
         // BooleanBuilder 정의
@@ -44,6 +44,6 @@ public class ReviewQueryService {
         builder.and(review.deletedAt.isNull());
 
         Predicate predicate = builder;
-        return reviewRepository.searchReviews(predicate);
+        return reviewRepository.searchReviews(predicate, pageable);
     }
 }

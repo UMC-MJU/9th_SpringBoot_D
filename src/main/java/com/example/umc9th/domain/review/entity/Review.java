@@ -40,8 +40,8 @@ public class Review extends BaseEntity {
 
     // 리뷰에 달린 댓글
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reply> replies = new ArrayList<>();
+    private List<Reply> replyList = new ArrayList<>();
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReviewPhoto> photos = new ArrayList<>();
+    private List<ReviewPhoto> reviewPhotoList = new ArrayList<>();
 }

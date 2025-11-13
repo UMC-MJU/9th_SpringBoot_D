@@ -2,11 +2,12 @@ package com.example.umc9th.domain.review.repository.querydsl;
 
 import com.example.umc9th.domain.review.entity.Review;
 import com.querydsl.core.types.Predicate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 
 public interface ReviewQueryDsl {
 
-    // Predicate를 받아 필터링된 리뷰 검색
-    List<Review> searchReviews(Predicate predicate);
+    // Predicate + Pageable 기반 동적 쿼리
+    Page<Review> searchReviews(Predicate predicate, Pageable pageable);
 }

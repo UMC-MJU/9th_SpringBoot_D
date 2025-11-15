@@ -42,8 +42,8 @@ public class ReviewQueryService {
         }
 
         builder.and(review.deletedAt.isNull());
-
         Predicate predicate = builder;
+
         return reviewRepository.searchReviews(predicate, pageable);
     }
 }

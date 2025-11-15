@@ -18,6 +18,8 @@ import com.example.umc9th.service.ReviewQueryService;
 import java.util.List;
 import com.example.umc9th.dto.MyReviewRequest;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import com.example.umc9th.global.apiPayload.ApiResponse;
+import com.example.umc9th.global.apiPayload.code.SuccessCode;
 @RestController
 @RequestMapping("/api/reviews")
 @RequiredArgsConstructor
@@ -35,10 +37,11 @@ public class ReviewController {
 
     //내가 작성한 리뷰 조회
     @GetMapping("/my")
-    public ResponseEntity<Page<ReviewResponse>> getMyReviews(
+    public ResponseEntity<ApiResponse<Page<ReviewResponse>>> getMyReviews(
         @ModelAttribute MyReviewRequest request,
         @PageableDefault(size=10, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ){
-        return ResponseEntity.ok(reviewService.getMyReviews(request, pageable));
+        Page<ReviewResponse> reviews = reviewService.getMyReviews(request, pageable);
+        return ResponseEntity.ok(ApiResponse.onSuccess(SuccessCode.SUCCESS, reviews));
     }
 }

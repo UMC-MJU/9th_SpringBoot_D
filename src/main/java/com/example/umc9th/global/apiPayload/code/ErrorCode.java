@@ -1,4 +1,4 @@
-package com.example.umc9th.exception;
+package com.example.umc9th.global.apiPayload.code;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

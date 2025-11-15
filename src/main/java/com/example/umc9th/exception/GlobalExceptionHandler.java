@@ -1,6 +1,9 @@
 package com.example.umc9th.exception;
 
 import com.example.umc9th.dto.ErrorResponse;
+import com.example.umc9th.global.apiPayload.ApiResponse;
+import com.example.umc9th.global.apiPayload.code.ErrorCode;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,83 +24,61 @@ public class GlobalExceptionHandler {
      * 커스텀 비즈니스 예외 처리
      */
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ErrorResponse> handleBusinessException(
+    public ResponseEntity<ApiResponse<Void>> handleBusinessException(
             BusinessException e, HttpServletRequest request) {
         
         ErrorCode errorCode = e.getErrorCode();
-        ErrorResponse errorResponse = ErrorResponse.of(
-            errorCode.getCode(),
-            e.getMessage(),
-            request.getRequestURI()
-        );
+        ApiResponse<Void> response = ApiResponse.onFailure(errorCode);
         
         log.warn("BusinessException: {} - {}", errorCode.getCode(), e.getMessage());
         
         return ResponseEntity.status(errorCode.getStatus())
-            .body(errorResponse);
+            .body(response);
     }
     
     /**
      * IllegalArgumentException 처리
      */
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(
+    public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(
             IllegalArgumentException e, HttpServletRequest request) {
         
-        ErrorResponse errorResponse = ErrorResponse.of(
-            ErrorCode.INVALID_INPUT_VALUE.getCode(),
-            e.getMessage(),
-            request.getRequestURI()
-        );
+        ApiResponse<Void> response = ApiResponse.onFailure(ErrorCode.INVALID_INPUT_VALUE);
         
         log.warn("IllegalArgumentException: {}", e.getMessage());
         
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(errorResponse);
+            .body(response);
     }
     
     /**
      * @Valid 검증 실패 처리
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationException(
+    public ResponseEntity<ApiResponse<Void>> handleValidationException(
             MethodArgumentNotValidException e, HttpServletRequest request) {
         
-        Map<String, String> errors = new HashMap<>();
-        e.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
+        ApiResponse<Void> response = ApiResponse.onFailure(ErrorCode.INVALID_INPUT_VALUE);
         
-        ErrorResponse errorResponse = ErrorResponse.of(
-            ErrorCode.INVALID_INPUT_VALUE.getCode(),
-            "입력값 검증에 실패했습니다: " + errors.toString(),
-            request.getRequestURI()
-        );
         
-        log.warn("ValidationException: {}", errors);
+        log.warn("ValidationException: {}", e.getMessage());
         
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(errorResponse);
+            .body(response);
     }
     
     /**
      * 기타 예외 처리 (최종 예외 핸들러)
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(
+    public ResponseEntity<ApiResponse<Void>> handleException(
             Exception e, HttpServletRequest request) {
         
-        ErrorResponse errorResponse = ErrorResponse.of(
-            ErrorCode.INTERNAL_SERVER_ERROR.getCode(),
-            ErrorCode.INTERNAL_SERVER_ERROR.getMessage(),
-            request.getRequestURI()
-        );
+        ApiResponse<Void> response = ApiResponse.onFailure(ErrorCode.INTERNAL_SERVER_ERROR);
         
         log.error("Unexpected error occurred: ", e);
         
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(errorResponse);
+            .body(response);
     }
 }

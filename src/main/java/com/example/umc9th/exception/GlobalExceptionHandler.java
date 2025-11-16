@@ -1,6 +1,6 @@
 package com.example.umc9th.exception;
 
-import com.example.umc9th.dto.ErrorResponse;
+
 import com.example.umc9th.global.apiPayload.ApiResponse;
 import com.example.umc9th.global.apiPayload.code.ErrorCode;
 

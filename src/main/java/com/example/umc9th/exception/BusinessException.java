@@ -1,5 +1,6 @@
 package com.example.umc9th.exception;
 
+import com.example.umc9th.global.apiPayload.code.ErrorCode;
 import lombok.Getter;
 
 @Getter

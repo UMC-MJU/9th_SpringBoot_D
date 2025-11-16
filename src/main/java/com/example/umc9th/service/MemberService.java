@@ -4,7 +4,7 @@ import com.example.umc9th.domain.member.Member;
 import com.example.umc9th.domain.member.NotificationSetting;
 import com.example.umc9th.dto.MyPageResponse;
 import com.example.umc9th.exception.BusinessException;
-import com.example.umc9th.exception.ErrorCode;
+import com.example.umc9th.global.apiPayload.code.ErrorCode;
 import com.example.umc9th.repository.member.MemberRepository;
 import com.example.umc9th.repository.member.NotificationSettingRepository;
 import com.example.umc9th.repository.member.board.InquiryRepository;

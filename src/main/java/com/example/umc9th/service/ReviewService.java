@@ -12,7 +12,7 @@ import com.example.umc9th.domain.member.Member;
 import com.example.umc9th.domain.member.board.Review;
 import com.example.umc9th.domain.store.Store;
 import com.example.umc9th.exception.BusinessException;
-import com.example.umc9th.exception.ErrorCode;
+import com.example.umc9th.global.apiPayload.code.ErrorCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

@@ -1,20 +1,19 @@
 package com.example.umc9th.exception;
 
 import com.example.umc9th.global.apiPayload.code.ErrorCode;
+import com.example.umc9th.global.exception.GeneralException;
 import lombok.Getter;
 
 @Getter
-public class BusinessException extends RuntimeException {
+public class BusinessException extends GeneralException {
     
-    private final ErrorCode errorCode;
+    
     
     public BusinessException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+        super(errorCode);
     }
     
     public BusinessException(ErrorCode errorCode, String message) {
-        super(message);
-        this.errorCode = errorCode;
+        super(errorCode, message);
     }
 }

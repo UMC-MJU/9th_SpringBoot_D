@@ -13,6 +13,7 @@ import com.example.umc9th.domain.member.board.Review;
 import com.example.umc9th.domain.store.Store;
 import com.example.umc9th.exception.BusinessException;
 import com.example.umc9th.global.apiPayload.code.ErrorCode;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -35,19 +36,19 @@ public class ReviewService {
 
         //회원과 가게 존재 여부 확인
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(()->new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+            .orElseThrow(()->new BusinessException(ErrorCode.MEMBER001));
 
         Store store = storeRepository.findById(storeId)
-            .orElseThrow(()->new BusinessException(ErrorCode.STORE_NOT_FOUND));
+            .orElseThrow(()->new BusinessException(ErrorCode.STORE001));
 
         //이미 리뷰가 존재하는지 확인 (중복 방지)
         if(reviewRepository.existsByMemberIdAndStoreId(memberId, storeId)){
-            throw new BusinessException(ErrorCode.REVIEW_ALREADY_EXISTS);
+            throw new BusinessException(ErrorCode.REVIEW001);
         }
 
         //평점 유효성 검사
         if(rating < 1 || rating > 5){
-            throw new BusinessException(ErrorCode.INVALID_RATING);
+            throw new BusinessException(ErrorCode.REVIEW4001);
         }
 
         //리뷰 생성 및 저장

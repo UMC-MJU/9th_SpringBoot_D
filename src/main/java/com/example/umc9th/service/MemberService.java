@@ -26,7 +26,7 @@ public class MemberService {
     public MyPageResponse getMyPage(Long memberId) {
         // 1. 회원 기본 정보 조회
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER001));
         
         // 2. 작성한 리뷰 개수 조회
         long reviewCount = reviewRepository.countByMemberId(memberId);

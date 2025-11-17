@@ -29,10 +29,11 @@ public class ReviewController {
 
     //검색 - 별점순 필터링 및 가게별 조건 추가
     @GetMapping("/search")
-    public List<Review> searchReview(
+    public ResponseEntity<ApiResponse<List<Review>>> searchReview(
             @ModelAttribute SearchReviewRequest request
     ){      
-        return reviewQueryService.searchReview(request);
+        List<Review> reviews = reviewQueryService.searchReview(request);
+        return ResponseEntity.ok(ApiResponse.onSuccess(SuccessCode.REVIEW200, reviews));
     }
 
     //내가 작성한 리뷰 조회
@@ -42,6 +43,6 @@ public class ReviewController {
         @PageableDefault(size=10, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ){
         Page<ReviewResponse> reviews = reviewService.getMyReviews(request, pageable);
-        return ResponseEntity.ok(ApiResponse.onSuccess(SuccessCode.SUCCESS, reviews));
+        return ResponseEntity.ok(ApiResponse.onSuccess(SuccessCode.REVIEW200, reviews));
     }
 }

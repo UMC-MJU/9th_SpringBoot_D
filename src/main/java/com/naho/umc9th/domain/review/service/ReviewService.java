@@ -1,5 +1,7 @@
 package com.naho.umc9th.domain.review.service;
 
+import com.naho.umc9th.domain.common.apiPayload.code.GeneralErrorCode;
+import com.naho.umc9th.domain.common.apiPayload.exception.GeneralException;
 import com.naho.umc9th.domain.member.entity.Member;
 import com.naho.umc9th.domain.member.repository.MemberRepository;
 import com.naho.umc9th.domain.review.dto.ReviewCreateRequestDto;
@@ -28,11 +30,12 @@ public class ReviewService {
 
     @Transactional
     public Review createReview(ReviewCreateRequestDto requestDto) {
+
         Member member = memberRepository.findById(requestDto.memberId())
-                .orElseThrow(() -> new EntityNotFoundException("해당 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new GeneralException(GeneralErrorCode.NOT_FOUND));
 
         Store store = storeRepository.findById(requestDto.storeId())
-                .orElseThrow(() -> new EntityNotFoundException("해당 가게를 찾을 수 없습니다."));
+                .orElseThrow(() -> new GeneralException(GeneralErrorCode.NOT_FOUND));
 
         Review review = Review.builder()
                 .member(member)

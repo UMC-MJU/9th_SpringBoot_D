@@ -1,5 +1,7 @@
 package com.naho.umc9th.domain.review.service;
 
+import com.naho.umc9th.domain.common.apiPayload.code.GeneralErrorCode;
+import com.naho.umc9th.domain.common.apiPayload.exception.GeneralException;
 import com.naho.umc9th.domain.review.entity.QReview;
 import com.naho.umc9th.domain.review.entity.Review;
 import com.naho.umc9th.domain.review.repository.ReviewRepository;
@@ -35,19 +37,27 @@ public class ReviewQueryService {
             }
 
             if(type.equals("rating")){
-                builder.and(review.rating.goe(Float.parseFloat(query)));
+                try {
+                    builder.and(review.rating.goe(Float.parseFloat(query)));
+                } catch (NumberFormatException e) {
+                    // "ABC" 같은 값이 오면 400 에러
+                    throw new GeneralException(GeneralErrorCode.BAD_REQUEST);
+                }
             }
+
             if(type.equals("both")){
+                try{
+                    String[] parts = query.split("&");
+                    String firstQuery = parts[0];
+                    String secondQuery = parts[1];
 
-                // & 기준 변환
-                String firstQuery = query.split("&")[0];
-                String secondQuery = query.split("&")[1];
-
-                // 동적 쿼리
-                builder.and(review.store.detailAddress.contains(firstQuery));
-                builder.and(review.rating.goe(Float.parseFloat(secondQuery)));
+                    // 동적 쿼리
+                    builder.and(review.store.detailAddress.contains(firstQuery));
+                    builder.and(review.rating.goe(Float.parseFloat(secondQuery)));
+                } catch (Exception e){
+                    throw new GeneralException(GeneralErrorCode.BAD_REQUEST);
+                }
             }
-
         }
 
         // Repository 사용 & 결과 매핑

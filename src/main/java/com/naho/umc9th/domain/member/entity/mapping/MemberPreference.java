@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Table(name = "member_preference")
-public class MemberPerference {
+public class MemberPreference {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

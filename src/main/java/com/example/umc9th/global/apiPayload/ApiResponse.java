@@ -20,6 +20,11 @@ public class ApiResponse<T> {
         return new ApiResponse<>(true, successCode.getCode(), successCode.getMessage(), result);
     }
 
+    //result가 없는 성공 응답
+    public static <T> ApiResponse<T> onSuccess(SuccessCode successCode){
+        return new ApiResponse<>(true, successCode.getCode(), successCode.getMessage(), null);
+    }
+
 
     //실패 응답
     public static <T> ApiResponse<T> onFailure(ErrorCode errorCode){

@@ -1,8 +1,8 @@
 package com.example.umc9th.exception;
 
-
 import com.example.umc9th.global.apiPayload.ApiResponse;
 import com.example.umc9th.global.apiPayload.code.ErrorCode;
+import com.example.umc9th.global.exception.GeneralException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -12,29 +12,28 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import java.util.HashMap;
 import java.util.Map;
+
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    
-    /**
-     * 커스텀 비즈니스 예외 처리
-     */
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ApiResponse<Void>> handleBusinessException(
-            BusinessException e, HttpServletRequest request) {
-        
+
+
+    @ExceptionHandler(GeneralException.class)
+    public ResponseEntity<ApiResponse<Void>> handleGeneralException(
+            GeneralException e, HttpServletRequest request){
         ErrorCode errorCode = e.getErrorCode();
         ApiResponse<Void> response = ApiResponse.onFailure(errorCode);
-        
-        log.warn("BusinessException: {} - {}", errorCode.getCode(), e.getMessage());
-        
+
+        log.warn("GeneralException: {} - {} - {}", 
+            e.getClass().getSimpleName(), errorCode.getCode(), e.getMessage());
         return ResponseEntity.status(errorCode.getStatus())
             .body(response);
     }
+    
+    
     
     /**
      * IllegalArgumentException 처리
@@ -43,7 +42,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(
             IllegalArgumentException e, HttpServletRequest request) {
         
-        ApiResponse<Void> response = ApiResponse.onFailure(ErrorCode.INVALID_INPUT_VALUE);
+        ApiResponse<Void> response = ApiResponse.onFailure(ErrorCode.COMMON001);
         
         log.warn("IllegalArgumentException: {}", e.getMessage());
         
@@ -58,7 +57,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleValidationException(
             MethodArgumentNotValidException e, HttpServletRequest request) {
         
-        ApiResponse<Void> response = ApiResponse.onFailure(ErrorCode.INVALID_INPUT_VALUE);
+        ApiResponse<Void> response = ApiResponse.onFailure(ErrorCode.COMMON001);
         
         
         log.warn("ValidationException: {}", e.getMessage());
@@ -74,7 +73,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleException(
             Exception e, HttpServletRequest request) {
         
-        ApiResponse<Void> response = ApiResponse.onFailure(ErrorCode.INTERNAL_SERVER_ERROR);
+        ApiResponse<Void> response = ApiResponse.onFailure(ErrorCode.COMMON000);
         
         log.error("Unexpected error occurred: ", e);
         

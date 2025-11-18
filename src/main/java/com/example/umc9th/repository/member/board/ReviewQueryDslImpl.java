@@ -36,8 +36,8 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl{
     @Override
     public List<Review> searchReview(SearchReviewRequest request){
         BooleanBuilder builder = new BooleanBuilder();
-        String query = request.getQuery();
-        String type = request.getType();
+        String query = request.query();
+        String type = request.type();
 
             if("location".equals(type)){
                 builder.and(store.address.addressName.contains(query));
@@ -64,13 +64,13 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl{
                 builder.and(store.name.contains(query));
             }
 
-            builder.and(storeIdCondition(request.getStoreId()));
-            builder.and(storeNameCondition(request.getStoreName()));
-            builder.and(ratingRangeCondition(request.getMinRating(), request.getMaxRating()));
+            builder.and(storeIdCondition(request.storeId()));
+            builder.and(storeNameCondition(request.storeName()));
+            builder.and(ratingRangeCondition(request.minRating(), request.maxRating()));
 
             OrderSpecifier<?>[] orderSpecifiers = createOrderSpecifiers(
-                request.getSortBy(), 
-                request.getSortDirection()
+                request.sortBy(), 
+                request.sortDirection()
             );
 
             List<Review> reviews = queryFactory
@@ -90,12 +90,12 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl{
     public Page<Review> findMyReviews(MyReviewRequest request, Pageable pageable){
         BooleanBuilder builder = new BooleanBuilder();
 
-        builder.and(review.member.id.eq(request.getMemberId()));
-        builder.and(storeIdCondition(request.getStoreId()));
-        builder.and(storeNameCondition(request.getStoreName()));
-        builder.and(ratingRangeCondition(request.getMinRating(), request.getMaxRating()));
+        builder.and(review.member.id.eq(request.memberId()));
+        builder.and(storeIdCondition(request.storeId()));
+        builder.and(storeNameCondition(request.storeName()));
+        builder.and(ratingRangeCondition(request.minRating(), request.maxRating()));
 
-        OrderSpecifier<?>[] orderSpecifiers = createOrderSpecifiers(request.getSortBy(), request.getSortDirection());
+        OrderSpecifier<?>[] orderSpecifiers = createOrderSpecifiers(request.sortBy(), request.sortDirection());
 
         List<Review> reviews = queryFactory
             .selectFrom(review)

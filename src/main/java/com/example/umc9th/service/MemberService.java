@@ -40,17 +40,17 @@ public class MemberService {
             .orElse(null);
         
         // 5. DTO로 변환하여 반환
-        return MyPageResponse.builder()
-            .nickName(member.getNickName())
-            .email(member.getSocialId())  // 소셜 로그인 이메일
-            .phone(member.getPhone())
-            .phoneVerified(member.getPhoneVerifiedAt() != null)
-            .point(member.getPoint())
-            .reviewCount(reviewCount)
-            .inquiryCount(inquiryCount)
-            .eventAlerts(notificationSetting != null ? notificationSetting.getEventAlerts() : true)
-            .reviewReplyAlerts(notificationSetting != null ? notificationSetting.getReviewReplyAlerts() : true)
-            .inquiryReplyAlerts(notificationSetting != null ? notificationSetting.getInquiryReplyAlerts() : true)
-            .build();
+        return new MyPageResponse(
+            member.getNickName(),
+            member.getSocialId(), // 소셜 로그인 이메일
+            member.getPhone(),
+            member.getPhoneVerifiedAt() != null,
+            member.getPoint(),
+            reviewCount,
+            inquiryCount,
+            notificationSetting != null ? notificationSetting.getEventAlerts() : true,
+            notificationSetting != null ? notificationSetting.getReviewReplyAlerts() : true,
+            notificationSetting != null ? notificationSetting.getInquiryReplyAlerts() : true
+        );
     }
 }

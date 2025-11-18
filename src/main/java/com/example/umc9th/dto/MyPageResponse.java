@@ -1,24 +1,14 @@
 package com.example.umc9th.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-@Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class MyPageResponse {
-    
-    private String nickName;
-    private String email;  
-    private String phone;
-    private Boolean phoneVerified;
-    private Integer point;
-    private Long reviewCount;
-    private Long inquiryCount;
-    private Boolean eventAlerts;
-    private Boolean reviewReplyAlerts;
-    private Boolean inquiryReplyAlerts;
-}
+public record MyPageResponse(
+    String nickName,
+    String email,
+    String phone,
+    Boolean phoneVerified,
+    Integer point,
+    Long reviewCount,
+    Long inquiryCount,
+    Boolean eventAlerts,
+    Boolean reviewReplyAlerts,
+    Boolean inquiryReplyAlerts
+) {}

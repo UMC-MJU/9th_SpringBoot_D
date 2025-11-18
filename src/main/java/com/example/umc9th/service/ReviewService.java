@@ -81,38 +81,38 @@ public class ReviewService {
 
     private ReviewResponse convertToResponse(Review review){
 
-        ReviewResponse.StoreInfo storeInfo = ReviewResponse.StoreInfo.builder()
-            .storeId(review.getStore().getId())
-            .storeName(review.getStore().getName())
-            .build();
+        ReviewResponse.StoreInfo storeInfo = new ReviewResponse.StoreInfo(
+            review.getStore().getId(),
+            review.getStore().getName()
+        );
 
         //리뷰 사진 정보 변환
         List<ReviewResponse.PhotoInfo> photoInfos = review.getPhotos().stream()
-            .map(photo -> ReviewResponse.PhotoInfo.builder()
-                .photoId(photo.getId())
-                .imageUrl(photo.getImageUrl())
-                .build())
+            .map(photo -> new ReviewResponse.PhotoInfo(
+                photo.getId(),
+                photo.getImageUrl()
+            ))
             .collect(Collectors.toList());
 
         ReviewResponse.ReplyInfo replyInfo = null;
         if(review.getReviewAnswer() != null){
-            replyInfo = ReviewResponse.ReplyInfo.builder()
-                .id(review.getReviewAnswer().getId())
-                .content(review.getReviewAnswer().getContent())
-                .createdAt(review.getReviewAnswer().getCreatedAt())
-                .build();
+            replyInfo = new ReviewResponse.ReplyInfo(
+                review.getReviewAnswer().getId(),
+                review.getReviewAnswer().getContent(),
+                review.getReviewAnswer().getCreatedAt()
+            );
         }
 
-        return ReviewResponse.builder()
-            .id(review.getId())
-            .content(review.getContent())
-            .star(review.getRating() != null ? review.getRating().floatValue() : null)
-            .rating(review.getRating())
-            .reply(replyInfo)
-            .createdAt(review.getCreatedAt())
-            .store(storeInfo)
-            .photos(photoInfos)
-            .build();
+        return new ReviewResponse(
+            review.getId(),
+            review.getContent(),
+            review.getRating() != null ? review.getRating().floatValue() : null,
+            replyInfo,
+            review.getRating(),
+            review.getCreatedAt(),
+            storeInfo,
+            photoInfos
+        );
     }
 
 }

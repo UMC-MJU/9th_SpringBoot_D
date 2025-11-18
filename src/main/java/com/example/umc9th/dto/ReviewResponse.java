@@ -1,54 +1,22 @@
 package com.example.umc9th.dto;
 
-import lombok.Getter;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class ReviewResponse {
+public record ReviewResponse(
+    Long id,
+    String content,
+    Float star,
+    ReplyInfo reply,
+    Integer rating,
+    LocalDateTime createdAt,
+    StoreInfo store,
+    List<PhotoInfo> photos
+) {
 
-    private Long id;
-    private String content;
-    private Float star;
-    private ReplyInfo reply;
+    public record StoreInfo(Long storeId, String storeName) {}
 
-    private Integer rating;
-    private LocalDateTime createdAt;
-    private StoreInfo store;
-    private List<PhotoInfo> photos;
-    
+    public record PhotoInfo(Long photoId, String imageUrl) {}
 
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class StoreInfo {
-        private Long storeId;
-        private String storeName;
-    }
-
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class PhotoInfo {
-        private Long photoId;
-        private String imageUrl;
-    }
-
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ReplyInfo {
-        private Long id;
-        private String content;
-        private LocalDateTime createdAt;
-    }
+    public record ReplyInfo(Long id, String content, LocalDateTime createdAt) {}
 }

@@ -47,9 +47,10 @@ public class Member extends BaseEntity {
     @Column(name = "birth", nullable = false)
     private String birth;
 
-    @Column(name = "social_type", nullable = false)
+    @Column(name = "social_type", nullable = true)
     @Enumerated(EnumType.STRING)
-    private SocialType socialType;
+    @Builder.Default
+    private SocialType socialType = null;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     @Builder.Default

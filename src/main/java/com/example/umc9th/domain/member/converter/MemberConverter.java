@@ -20,7 +20,6 @@ public class MemberConverter {
                 .phone(dto.phone())
                 .name(dto.name())
                 .gender(dto.gender())
-                .point(dto.point())
                 .birth(dto.birth())
                 .build();
     }

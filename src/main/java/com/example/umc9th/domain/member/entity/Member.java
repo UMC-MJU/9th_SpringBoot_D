@@ -10,6 +10,7 @@ import com.example.umc9th.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +42,14 @@ public class Member extends BaseEntity {
     private Gender gender = Gender.NONE;
 
     @Column(name = "birthday")
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     @Column(name = "address", nullable = false)
     @Enumerated(EnumType.STRING)
     private Address address;
+
+    @Column(name = "detail_address")
+    private String detailAddress;
 
     @Column(name = "phone_num", nullable = false, length = 15)
     private String phoneNum;
@@ -59,7 +63,7 @@ public class Member extends BaseEntity {
 
     @Column(name = "social_type")
     @Enumerated(EnumType.STRING)
-    private SocialType social_type;
+    private SocialType social_type = SocialType.LOCAL;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -71,9 +75,11 @@ public class Member extends BaseEntity {
 
     // 회원이 참여한 미션 목록 — 회원 삭제 시 미션 매핑도 함께 삭제
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<MemberMission> memberMissions = new ArrayList<>();
 
     // 회원의 선호 음식 — 회원 삭제 시 연결된 유저 선호 음식 데이터도 함께 삭제
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<MemberFood> memberFoods = new ArrayList<>();
 }

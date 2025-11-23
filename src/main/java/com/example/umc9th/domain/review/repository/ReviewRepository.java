@@ -18,4 +18,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewQue
 
     // 닉네임으로 리뷰 조회 (가게 관리자 페이지에서 검색 가능)
     List<Review> findByMember_NicknameAndDeletedAtIsNull(String nickname);
+
 }

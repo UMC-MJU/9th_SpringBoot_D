@@ -1,4 +1,4 @@
-package com.example.umc9th.domain.review.service;
+package com.example.umc9th.domain.review.service.query;
 
 import com.example.umc9th.domain.review.entity.QReview;
 import com.example.umc9th.domain.review.entity.Review;

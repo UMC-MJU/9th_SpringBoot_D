@@ -21,4 +21,7 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
     default Page<MemberMission> findCompletedMissionsByMemberId(Long memberId, Pageable pageable) {
         return findByMember_IdAndStatusOrderByMission_DeadlineDesc(memberId, Status.COMPLETED, pageable);
     }
+
+    // 이미 도전했는지 확인용 메서드
+    boolean existsByMember_IdAndMission_Id(Long memberId, Long missionId);
 }

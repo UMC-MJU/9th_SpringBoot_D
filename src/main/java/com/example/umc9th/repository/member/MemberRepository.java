@@ -7,5 +7,5 @@ import com.example.umc9th.domain.member.Member;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long>{
-
+    boolean existsByNickName(String nickName);
 }

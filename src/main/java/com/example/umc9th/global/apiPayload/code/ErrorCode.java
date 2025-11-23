@@ -15,6 +15,13 @@ public enum ErrorCode {
 
     //멤버 관련 에러
     MEMBER001(HttpStatus.NOT_FOUND, "MEMBER001", "존재하지 않는 회원입니다."),
+    MEMBER002(HttpStatus.CONFLICT, "MEMBER002", "이미 사용 중인 닉네임입니다."),
+
+    //주소 관련 에러
+    ADDRESS001(HttpStatus.NOT_FOUND, "ADDRESS001", "존재하지 않는 주소입니다."),
+
+    //카테고리 관련 에러
+    CATEGORY001(HttpStatus.NOT_FOUND, "CATEGORY001", "존재하지 않는 카테고리입니다."),
 
     //가게 관련 에러
     STORE001(HttpStatus.NOT_FOUND, "STORE001", "존재하지 않는 가게입니다."),

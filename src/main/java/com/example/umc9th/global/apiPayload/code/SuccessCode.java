@@ -12,6 +12,7 @@ public enum SuccessCode {
     
     // 멤버 관련 성공
     MEMBER200(HttpStatus.OK, "MEMBER200", "회원 정보 조회가 완료되었습니다."),
+    AUTH201(HttpStatus.CREATED, "AUTH201", "회원 가입이 완료되었습니다."),
     
     // 가게 관련 성공
     STORE200(HttpStatus.OK, "STORE200", "가게 정보 조회가 완료되었습니다."),

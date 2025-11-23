@@ -93,7 +93,7 @@ public class ReviewService {
                 photo.getImageUrl()
             ))
             .collect(Collectors.toList());
-
+        //사장님 답글 변환
         ReviewResponse.ReplyInfo replyInfo = null;
         if(review.getReviewAnswer() != null){
             replyInfo = new ReviewResponse.ReplyInfo(
@@ -102,7 +102,7 @@ public class ReviewService {
                 review.getReviewAnswer().getCreatedAt()
             );
         }
-
+        //최종 dto 반환
         return new ReviewResponse(
             review.getId(),
             review.getContent(),

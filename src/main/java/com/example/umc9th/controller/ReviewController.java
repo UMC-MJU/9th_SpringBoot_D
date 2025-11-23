@@ -20,6 +20,10 @@ import com.example.umc9th.dto.MyReviewRequest;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import com.example.umc9th.global.apiPayload.ApiResponse;
 import com.example.umc9th.global.apiPayload.code.SuccessCode;
+import com.example.umc9th.dto.review.CreateReviewRequest;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/reviews")
 @RequiredArgsConstructor
@@ -44,5 +48,15 @@ public class ReviewController {
     ){
         Page<ReviewResponse> reviews = reviewService.getMyReviews(request, pageable);
         return ResponseEntity.ok(ApiResponse.onSuccess(SuccessCode.REVIEW200, reviews));
+    }
+
+    @PostMapping("/write")
+    public ResponseEntity<ApiResponse<ReviewResponse>> createReview(
+        @Valid @RequestBody CreateReviewRequest request
+    ){
+        Review review = reviewService.createReview(request);
+        ReviewResponse response = reviewService.convertToResponse(review);
+        return ResponseEntity.status(SuccessCode.REVIEW201.getStatus())
+            .body(ApiResponse.onSuccess(SuccessCode.REVIEW201, response));
     }
 }

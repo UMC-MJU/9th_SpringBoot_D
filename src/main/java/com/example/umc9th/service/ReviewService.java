@@ -21,6 +21,9 @@ import com.example.umc9th.dto.ReviewResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.example.umc9th.dto.MyReviewRequest;
+import com.example.umc9th.dto.review.CreateReviewRequest;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -31,37 +34,6 @@ public class ReviewService {
     private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
     
-    @Transactional
-    public Review createReview(Long memberId, Long storeId, String content, Integer rating){
-
-        //회원과 가게 존재 여부 확인
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(()->new BusinessException(ErrorCode.MEMBER001));
-
-        Store store = storeRepository.findById(storeId)
-            .orElseThrow(()->new BusinessException(ErrorCode.STORE001));
-
-        //이미 리뷰가 존재하는지 확인 (중복 방지)
-        if(reviewRepository.existsByMemberIdAndStoreId(memberId, storeId)){
-            throw new BusinessException(ErrorCode.REVIEW001);
-        }
-
-        //평점 유효성 검사
-        if(rating < 1 || rating > 5){
-            throw new BusinessException(ErrorCode.REVIEW4001);
-        }
-
-        //리뷰 생성 및 저장
-        Review review = Review.builder()
-            .member(member)
-            .store(store)
-            .content(content)
-            .rating(rating)
-            .build();
-
-        return reviewRepository.save(review);
-        
-    }
 
     //내가 작성한 리뷰 조회(가게별, 별점별 필터링)
     public Page<ReviewResponse> getMyReviews(MyReviewRequest request, Pageable pageable){
@@ -79,7 +51,32 @@ public class ReviewService {
         );
     }
 
-    private ReviewResponse convertToResponse(Review review){
+    @Transactional
+    public Review createReview(CreateReviewRequest request){
+        //하드코딩: DB에 있는 첫 번째 회원 가져오기
+        Member member = memberRepository.findFirstByOrderByIdAsc()
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER001));
+
+        Store store = storeRepository.findById(request.storeId())
+            .orElseThrow(() -> new BusinessException(ErrorCode.STORE001));
+
+        //이미 리뷰가 존재하는지 확인
+        if(reviewRepository.existsByMemberIdAndStoreId(member.getId(), request.storeId())){
+            throw new BusinessException(ErrorCode.REVIEW001);
+        }
+
+        // 리뷰 생성 및 저장
+        Review review = Review.builder()
+            .member(member)
+            .store(store)
+            .content(request.content())
+            .rating(request.rating())
+            .build();
+
+        return reviewRepository.save(review);
+    }
+
+    public ReviewResponse convertToResponse(Review review){
 
         ReviewResponse.StoreInfo storeInfo = new ReviewResponse.StoreInfo(
             review.getStore().getId(),

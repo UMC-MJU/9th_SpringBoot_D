@@ -26,4 +26,6 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
             @Param("statuses") List<MissionStatus> statuses,
             Pageable pageable
     );
+
+    boolean existsByMemberIdAndMissionId(Long memberId, Long missionId);
 }

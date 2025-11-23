@@ -30,6 +30,11 @@ public enum ErrorCode {
     REVIEW001(HttpStatus.CONFLICT, "REVIEW001", "이미 리뷰를 작성한 가게입니다."),
     REVIEW4001(HttpStatus.BAD_REQUEST, "REVIEW4001", "평점은 1~5 사이의 정수여야 합니다."),
 
+    //미션 관련 에러
+    MISSION001(HttpStatus.NOT_FOUND, "MISSION001", "존재하지 않는 미션입니다."),
+    MISSION002(HttpStatus.BAD_REQUEST, "MISSION002", "도전 가능한 기간이 아닙니다."),
+    MISSION003(HttpStatus.CONFLICT, "MISSION003", "이미 도전한 미션입니다."),
+
     //테스트 관련 에러
     TEST001(HttpStatus.BAD_REQUEST, "TEST001", "이거는 테스트");
     

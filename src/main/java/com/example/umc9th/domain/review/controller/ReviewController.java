@@ -1,23 +1,27 @@
 package com.example.umc9th.domain.review.controller;
 
 import com.example.umc9th.domain.review.dto.ReviewDto;
+import com.example.umc9th.domain.review.dto.ReviewReqDTO;
+import com.example.umc9th.domain.review.dto.ReviewResDTO;
+import com.example.umc9th.domain.review.exception.code.ReviewSuccessCode;
 import com.example.umc9th.domain.review.service.ReviewQueryService;
+import com.example.umc9th.domain.review.service.command.ReviewCommandService;
 import com.example.umc9th.global.apiPayload.ApiResponse;
 import com.example.umc9th.global.apiPayload.code.GeneralSuccessCode;
 import com.example.umc9th.global.config.PageRequest;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ReviewController {
     private final ReviewQueryService reviewQueryService;
+    private final ReviewCommandService reviewCommandService;
 
-    public ReviewController(ReviewQueryService reviewQueryService) {
+    public ReviewController(ReviewQueryService reviewQueryService, ReviewCommandService reviewCommandService) {
         this.reviewQueryService = reviewQueryService;
+        this.reviewCommandService = reviewCommandService;
     }
 
     @GetMapping("/reviews/search")
@@ -45,5 +49,12 @@ public class ReviewController {
 
         Page<ReviewDto> result = reviewQueryService.searchReviewByMemberId(memberId, query, type, pageable);
         return ApiResponse.onSuccess(code, result);
+    }
+
+    @PostMapping("/user/{memberId}/reviews")
+    public ApiResponse<ReviewResDTO.AddDTO> addReview(
+            @RequestBody @Valid ReviewReqDTO.AddDTO dto
+    ){
+        return ApiResponse.onSuccess(ReviewSuccessCode.FOUND, reviewCommandService.addReview(dto));
     }
 }

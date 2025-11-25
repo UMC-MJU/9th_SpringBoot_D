@@ -4,12 +4,11 @@ import com.naho.umc9th.domain.common.apiPayload.code.GeneralErrorCode;
 import com.naho.umc9th.domain.common.apiPayload.exception.GeneralException;
 import com.naho.umc9th.domain.member.entity.Member;
 import com.naho.umc9th.domain.member.repository.MemberRepository;
-import com.naho.umc9th.domain.review.dto.ReviewCreateRequestDto;
+import com.naho.umc9th.domain.review.dto.ReviewReqDTO;
 import com.naho.umc9th.domain.review.entity.Review;
 import com.naho.umc9th.domain.review.repository.ReviewRepository;
 import com.naho.umc9th.domain.store.entity.Store;
 import com.naho.umc9th.domain.store.repository.StoreRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +28,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public Review createReview(ReviewCreateRequestDto requestDto) {
+    public Review createReview(ReviewReqDTO.ReviewCreateRequestDto requestDto) {
 
         Member member = memberRepository.findById(requestDto.memberId())
                 .orElseThrow(() -> new GeneralException(GeneralErrorCode.NOT_FOUND));

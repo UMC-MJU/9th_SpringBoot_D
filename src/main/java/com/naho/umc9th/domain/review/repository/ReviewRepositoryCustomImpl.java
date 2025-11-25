@@ -1,6 +1,6 @@
 package com.naho.umc9th.domain.review.repository;
 
-import com.naho.umc9th.domain.review.dto.ReviewDto;
+import com.naho.umc9th.domain.review.dto.ReviewResDTO;
 import com.naho.umc9th.domain.review.dto.ReviewSearchCond;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -25,11 +25,11 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public Page<ReviewDto> findMyReviews(Long memberId, ReviewSearchCond cond, Pageable pageable){
+    public Page<ReviewResDTO.ReviewDetailDto> findMyReviews(Long memberId, ReviewSearchCond cond, Pageable pageable){
 
         // 1. 콘텐츠 조회(동적 쿼리)
-        List<ReviewDto> content = queryFactory
-                .select(Projections.constructor(ReviewDto.class,
+        List<ReviewResDTO.ReviewDetailDto> content = queryFactory
+                .select(Projections.constructor(ReviewResDTO.ReviewDetailDto.class,
                         store.name,
                         review.rating,
                         review.content

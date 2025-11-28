@@ -77,4 +77,29 @@ public class MissionService {
                                 pageable,
                                 memberMissionPage.getTotalElements());
         }
+
+        @Transactional
+        public void completeMission(Long memberMissionId) {
+                MemberMission memberMission = memberMissionRepository.findById(memberMissionId)
+                                .orElseThrow(() -> new BusinessException(ErrorCode.MISSION001));
+
+                memberMission.complete();
+        }
+
+        @Transactional(readOnly = true)
+        public Page<MyMissionResponseDTO> getCompletedMissions(Long memberId, Pageable pageable) {
+                Page<MemberMission> memberMissionPage = memberMissionRepository.findMyMissionsByStatuses(
+                                memberId,
+                                List.of(MissionStatus.COMPLETED),
+                                pageable);
+
+                List<MyMissionResponseDTO> myMissionResponseDTOS = memberMissionPage.getContent().stream()
+                                .map(MissionConverter::toMyMissionResponseDTO)
+                                .collect(Collectors.toList());
+
+                return new PageImpl<>(
+                                myMissionResponseDTOS,
+                                pageable,
+                                memberMissionPage.getTotalElements());
+        }
 }

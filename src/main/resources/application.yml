@@ -13,12 +13,11 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
+    defer-datasource-initialization: true
     properties:
       hibernate:
         format_sql: true
   sql:
     init:
       mode: always
-  jpa:
-    defer-datasource-initialization: true

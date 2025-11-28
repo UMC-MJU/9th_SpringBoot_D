@@ -17,3 +17,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  sql:
+    init:
+      mode: always
+  jpa:
+    defer-datasource-initialization: true

@@ -20,3 +20,7 @@ VALUES (1, '10000원 이상 주문하기', 500, NOW(), DATE_ADD(NOW(), INTERVAL 
 
 INSERT IGNORE INTO mission (store_id, description, reward_points, start_date, end_date, created_at, updated_at)
 VALUES (1, '리뷰 작성하기', 300, NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), NOW(), NOW());
+
+INSERT IGNORE INTO member_mission (member_id, mission_id, status, created_at, updated_at)
+VALUES (1, 1, 'CHALLENGING', NOW(), NOW());
+

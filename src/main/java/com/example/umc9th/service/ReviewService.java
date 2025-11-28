@@ -17,13 +17,12 @@ import com.example.umc9th.global.apiPayload.code.ErrorCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import com.example.umc9th.dto.ReviewResponse;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.example.umc9th.dto.MyReviewResponseDTO;
+import com.example.umc9th.converter.ReviewConverter;
 import com.example.umc9th.dto.MyReviewRequest;
 import com.example.umc9th.dto.review.CreateReviewRequest;
-
-
 
 @Service
 @RequiredArgsConstructor
@@ -33,83 +32,45 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
-    
 
-    //내가 작성한 리뷰 조회(가게별, 별점별 필터링)
-    public Page<ReviewResponse> getMyReviews(MyReviewRequest request, Pageable pageable){
-        //동적 쿼리 실행
-        Page<Review> reviewPage = reviewRepository.findMyReviews(request,pageable);
+    // 내가 작성한 리뷰 조회(가게별, 별점별 필터링)
+    public Page<MyReviewResponseDTO> getMyReviews(MyReviewRequest request, Pageable pageable) {
+        // 동적 쿼리 실행
+        Page<Review> reviewPage = reviewRepository.findMyReviews(request, pageable);
 
-        List<ReviewResponse> reviewResponses = reviewPage.getContent().stream()
-            .map(this::convertToResponse)
-            .collect(Collectors.toList());
-        
+        List<MyReviewResponseDTO> reviewResponses = reviewPage.getContent().stream()
+                .map(ReviewConverter::toMyReviewResponseDTO)
+                .collect(Collectors.toList());
+
         return new PageImpl<>(
-            reviewResponses,
-            pageable,
-            reviewPage.getTotalElements()
-        );
+                reviewResponses,
+                pageable,
+                reviewPage.getTotalElements());
     }
 
     @Transactional
-    public Review createReview(CreateReviewRequest request){
-        //하드코딩: DB에 있는 첫 번째 회원 가져오기
+    public Review createReview(CreateReviewRequest request) {
+        // 하드코딩: DB에 있는 첫 번째 회원 가져오기
         Member member = memberRepository.findFirstByOrderByIdAsc()
-            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER001));
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER001));
 
         Store store = storeRepository.findById(request.storeId())
-            .orElseThrow(() -> new BusinessException(ErrorCode.STORE001));
+                .orElseThrow(() -> new BusinessException(ErrorCode.STORE001));
 
-        //이미 리뷰가 존재하는지 확인
-        if(reviewRepository.existsByMemberIdAndStoreId(member.getId(), request.storeId())){
+        // 이미 리뷰가 존재하는지 확인
+        if (reviewRepository.existsByMemberIdAndStoreId(member.getId(), request.storeId())) {
             throw new BusinessException(ErrorCode.REVIEW001);
         }
 
         // 리뷰 생성 및 저장
         Review review = Review.builder()
-            .member(member)
-            .store(store)
-            .content(request.content())
-            .rating(request.rating())
-            .build();
+                .member(member)
+                .store(store)
+                .content(request.content())
+                .rating(request.rating())
+                .build();
 
         return reviewRepository.save(review);
-    }
-
-    public ReviewResponse convertToResponse(Review review){
-
-        ReviewResponse.StoreInfo storeInfo = new ReviewResponse.StoreInfo(
-            review.getStore().getId(),
-            review.getStore().getName()
-        );
-
-        //리뷰 사진 정보 변환
-        List<ReviewResponse.PhotoInfo> photoInfos = review.getPhotos().stream()
-            .map(photo -> new ReviewResponse.PhotoInfo(
-                photo.getId(),
-                photo.getImageUrl()
-            ))
-            .collect(Collectors.toList());
-        //사장님 답글 변환
-        ReviewResponse.ReplyInfo replyInfo = null;
-        if(review.getReviewAnswer() != null){
-            replyInfo = new ReviewResponse.ReplyInfo(
-                review.getReviewAnswer().getId(),
-                review.getReviewAnswer().getContent(),
-                review.getReviewAnswer().getCreatedAt()
-            );
-        }
-        //최종 dto 반환
-        return new ReviewResponse(
-            review.getId(),
-            review.getContent(),
-            review.getRating() != null ? review.getRating().floatValue() : null,
-            replyInfo,
-            review.getRating(),
-            review.getCreatedAt(),
-            storeInfo,
-            photoInfos
-        );
     }
 
 }

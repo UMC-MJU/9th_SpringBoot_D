@@ -4,6 +4,7 @@ import com.example.umc9th.global.apiPayload.ApiResponse;
 import com.example.umc9th.global.apiPayload.code.BaseErrorCode;
 import com.example.umc9th.global.apiPayload.code.GeneralErrorCode;
 import com.example.umc9th.global.apiPayload.exception.GeneralException;
+import com.example.umc9th.global.apiPayload.exception.PageNumberException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -47,4 +48,13 @@ public class GeneralExceptionAdvice {
         // 에러 코드, 메시지와 함께 errors를 반환
         return ResponseEntity.status(code.getStatus()).body(errorResponse);
     }
+
+    // 페이지 번호 검증 예외 처리
+    @ExceptionHandler(PageNumberException.class)
+    public ResponseEntity<ApiResponse<String>> handlePageNumberException(PageNumberException ex) {
+        GeneralErrorCode code = GeneralErrorCode.INVALID_REQUEST;
+        return ResponseEntity.status(code.getStatus())
+                .body(ApiResponse.onFailure(code, ex.getMessage()));
+    }
+
 }

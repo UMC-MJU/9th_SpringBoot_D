@@ -1,9 +1,12 @@
 package com.example.umc9th.domain.review.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ReviewResDTO {
 
@@ -25,4 +28,22 @@ public class ReviewResDTO {
         private String storeName;
         private LocalDateTime createdAt;
     }
+
+    @Builder
+    public record ReviewPreViewListDTO(
+            List<ReviewPreViewDTO> reviewList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ){}
+
+    @Builder
+    public record ReviewPreViewDTO(
+            String memberNickname,
+            Float star,
+            String content,
+            LocalDateTime createdAt
+    ){}
 }

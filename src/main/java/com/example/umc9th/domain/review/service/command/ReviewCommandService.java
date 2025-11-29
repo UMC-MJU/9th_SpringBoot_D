@@ -1,19 +1,21 @@
 package com.example.umc9th.domain.review.service.command;
 
 import com.example.umc9th.domain.member.entity.Member;
+import com.example.umc9th.domain.member.exception.MemberException;
 import com.example.umc9th.domain.member.repository.MemberRepository;
 import com.example.umc9th.domain.review.dto.ReviewReqDTO;
 import com.example.umc9th.domain.review.entity.Review;
-import com.example.umc9th.domain.review.exception.ReviewException;
 import com.example.umc9th.domain.review.repository.ReviewRepository;
 import com.example.umc9th.domain.store.entity.Store;
+import com.example.umc9th.domain.store.exception.StoreException;
 import com.example.umc9th.domain.store.repository.StoreRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.example.umc9th.domain.review.exception.code.ReviewErrorCode.MEMBER_NOT_FOUND;
-import static com.example.umc9th.domain.review.exception.code.ReviewErrorCode.STORE_NOT_FOUND;
+import static com.example.umc9th.domain.member.exception.code.MemberErrorCode.MEMBER_NOT_FOUND;
+import static com.example.umc9th.domain.store.exception.code.StoreErrorCode.NOT_FOUND;
+
 
 @Service
 @RequiredArgsConstructor
@@ -26,12 +28,15 @@ public class ReviewCommandService {
     @Transactional
     public Review createReview(ReviewReqDTO.CreateDTO dto, Long storeId) {
 
+        // 회원 검증
         Member member = memberRepository.findById(dto.memberId())
-                .orElseThrow(() -> new ReviewException(MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
+        // 가게 검증
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new ReviewException(STORE_NOT_FOUND));
+                .orElseThrow(() -> new StoreException(NOT_FOUND));
 
+        // 리뷰 생성
         Review review = Review.builder()
                 .member(member)
                 .store(store)
@@ -41,5 +46,5 @@ public class ReviewCommandService {
 
         return reviewRepository.saveAndFlush(review);
     }
-
 }
+

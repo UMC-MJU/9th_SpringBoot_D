@@ -4,6 +4,8 @@ import com.example.umc9th.domain.member.entity.Member;
 import com.example.umc9th.domain.review.entity.Review;
 import com.example.umc9th.domain.review.repository.querydsl.ReviewQueryDsl;
 import com.example.umc9th.domain.store.entity.Store;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewQue
     // 닉네임으로 리뷰 조회 (가게 관리자 페이지에서 검색 가능)
     List<Review> findByMember_NicknameAndDeletedAtIsNull(String nickname);
 
+    // 가게 리뷰 페이징 조회
+    Page<Review> findAllByStoreAndDeletedAtIsNull(Store store, Pageable pageable);
 }

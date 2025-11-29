@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class MemberMissionResDTO {
 
@@ -24,4 +25,14 @@ public class MemberMissionResDTO {
         private LocalDateTime createdAt;
     }
 
+    @Builder
+    @Getter
+    public static class ChallengeListDTO {
+        private List<ChallengeDTO> missionList;
+        private int listSize;
+        private int totalPage;
+        private long totalElements;
+        private boolean isFirst;
+        private boolean isLast;
+    }
 }

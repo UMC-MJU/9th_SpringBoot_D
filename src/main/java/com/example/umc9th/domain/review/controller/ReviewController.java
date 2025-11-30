@@ -4,7 +4,7 @@ import com.example.umc9th.domain.review.dto.ReviewDto;
 import com.example.umc9th.domain.review.dto.ReviewReqDTO;
 import com.example.umc9th.domain.review.dto.ReviewResDTO;
 import com.example.umc9th.domain.review.exception.code.ReviewSuccessCode;
-import com.example.umc9th.domain.review.service.ReviewQueryService;
+import com.example.umc9th.domain.review.service.query.ReviewQueryService;
 import com.example.umc9th.domain.review.service.command.ReviewCommandService;
 import com.example.umc9th.global.apiPayload.ApiResponse;
 import com.example.umc9th.global.apiPayload.code.GeneralSuccessCode;
@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class ReviewController {
+public class ReviewController implements ReviewControllerDocs{
     private final ReviewQueryService reviewQueryService;
     private final ReviewCommandService reviewCommandService;
 
@@ -24,6 +24,15 @@ public class ReviewController {
         this.reviewCommandService = reviewCommandService;
     }
 
+    @Override
+    @GetMapping("/reviews")
+    public ApiResponse<ReviewResDTO.ReviewPreViewListDTO> getReviews(
+            @RequestParam String storeName,
+            @RequestParam(defaultValue = "1") Integer page
+    ){
+        ReviewSuccessCode code = ReviewSuccessCode.FOUND;
+        return ApiResponse.onSuccess(code, reviewQueryService.findReview(storeName, page));
+    }
     @GetMapping("/reviews/search")
     public ApiResponse<Page<ReviewDto>> searchReview(
             @RequestParam(required = false) String query,

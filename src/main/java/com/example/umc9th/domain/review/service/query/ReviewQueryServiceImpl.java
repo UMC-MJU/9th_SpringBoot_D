@@ -1,27 +1,35 @@
-package com.example.umc9th.domain.review.service;
-
+package com.example.umc9th.domain.review.service.query;
 
 import com.example.umc9th.domain.member.entity.QMember;
+import com.example.umc9th.domain.review.converter.ReviewConverter;
 import com.example.umc9th.domain.review.dto.ReviewDto;
+import com.example.umc9th.domain.review.dto.ReviewResDTO;
 import com.example.umc9th.domain.review.entity.QReview;
+import com.example.umc9th.domain.review.entity.Review;
 import com.example.umc9th.domain.review.exception.ReviewException;
 import com.example.umc9th.domain.review.exception.code.ReviewErrorCode;
 import com.example.umc9th.domain.review.repository.ReviewRepository;
 import com.example.umc9th.domain.store.entity.QStore;
+import com.example.umc9th.domain.store.entity.Store;
+import com.example.umc9th.domain.store.exception.StoreException;
+import com.example.umc9th.domain.store.exception.code.StoreErrorCode;
+import com.example.umc9th.domain.store.repository.StoreRepository;
 import com.example.umc9th.global.entity.QAddress;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ReviewQueryService {
+public class ReviewQueryServiceImpl implements ReviewQueryService {
 
     private final ReviewRepository reviewRepository;
-    //private final ReviewMapper reviewMapper;
+    private final StoreRepository storeRepository;
 
+    @Override
     public Page<ReviewDto> searchReview(String query, String type, Pageable pageable) {
         QReview review = QReview.review;
         QAddress address = QAddress.address1;
@@ -55,7 +63,7 @@ public class ReviewQueryService {
 //                .map(ReviewDto::fromEntity) // 임시 변환 메서드 사용 (실제로는 Mapper 사용 권장)
 //                .collect(Collectors.toList());
     }
-
+    @Override
     public Page<ReviewDto> searchReviewByMemberId(Long memberId, String query, String type, Pageable pageable) {
 
         if (memberId == null || memberId <= 0) {
@@ -99,5 +107,18 @@ public class ReviewQueryService {
 
         Page<ReviewDto> reviewPage = reviewRepository.searchReview(builder, pageable); // 반환 되는 값이 같기 때문에 predicate로만 처리
         return reviewPage;
+    }
+
+    @Override
+    public ReviewResDTO.ReviewPreViewListDTO findReview(
+        String storeName, Integer page
+    ){
+        Store store = storeRepository.findByName(storeName)
+                .orElseThrow(() -> new StoreException(StoreErrorCode.NOT_FOUND));
+
+        PageRequest pageRequest = PageRequest.of(page, 5);
+        Page<Review> result = reviewRepository.findAllByStore(store, pageRequest);
+
+        return ReviewConverter.toReviewPreviewListDTO(result);
     }
 }

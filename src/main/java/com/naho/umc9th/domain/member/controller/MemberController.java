@@ -8,6 +8,8 @@ import com.naho.umc9th.domain.member.dto.MemberResDTO;
 import com.naho.umc9th.domain.member.exception.code.MemberSuccessCode;
 import com.naho.umc9th.domain.member.service.command.MemberCommandService;
 import com.naho.umc9th.domain.member.service.query.MemberQueryService;
+import com.naho.umc9th.domain.mission.dto.MemberMissionResDTO;
+import com.naho.umc9th.domain.mission.service.MemberMissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -25,6 +27,7 @@ public class MemberController {
 
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
+    private final MemberMissionService memberMissionService;
 
     //회원가입
     @PostMapping("/sign-up")
@@ -47,4 +50,21 @@ public class MemberController {
     ) {
         return ApiResponse.onSuccess(GeneralSuccessCode._OK, memberQueryService.getReviewList(memberId, page - 1));
     }
+
+    //내가 진행 중인 미션 목록 조회
+    @GetMapping("{memberId}/missions")
+    @Operation(summary = "내가 진행 중인 미션 목록 조회 API", description = "진행 중인 미션들을 페이징하여 조회합니다. Query String으로 page 번호를 주세요 (1부터 시작")
+    @Parameters({
+            @Parameter(name = "memberId", description = "회원의 아이디, path variable 입니다."),
+            @Parameter(name = "page", description = "페이지 번호, 1번이 1페이지 입니다.")
+    })
+    public ApiResponse<MemberMissionResDTO.MemberMissionPreViewListDTO> getMyOngoingMissions(
+            @PathVariable(name = "memberId") Long memberId,
+            @CheckPage @RequestParam(name = "page") Integer page
+    ) {
+        return ApiResponse.onSuccess(GeneralSuccessCode._OK, memberMissionService.getMyOngoingMissions(memberId, page));
+    }
+
+
+
 }

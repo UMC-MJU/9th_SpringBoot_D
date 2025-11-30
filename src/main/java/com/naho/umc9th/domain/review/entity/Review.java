@@ -9,6 +9,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -36,6 +38,9 @@ public class Review extends BaseEntity {
 
     @Column(name = "content")
     private String content;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    private List<ReviewPhoto> reviewPhotoList = new ArrayList<>();
 
     //mappedBy를 사용해 주인이 아님을 명시
     @OneToOne(mappedBy = "review")

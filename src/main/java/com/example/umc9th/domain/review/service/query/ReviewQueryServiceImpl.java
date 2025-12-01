@@ -1,6 +1,10 @@
 package com.example.umc9th.domain.review.service.query;
 
+import com.example.umc9th.domain.member.entity.Member;
 import com.example.umc9th.domain.member.entity.QMember;
+import com.example.umc9th.domain.member.exception.MemberException;
+import com.example.umc9th.domain.member.exception.code.MemberErrorCode;
+import com.example.umc9th.domain.member.repository.MemberRepository;
 import com.example.umc9th.domain.review.converter.ReviewConverter;
 import com.example.umc9th.domain.review.dto.ReviewDto;
 import com.example.umc9th.domain.review.dto.ReviewResDTO;
@@ -28,6 +32,7 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
 
     private final ReviewRepository reviewRepository;
     private final StoreRepository storeRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public Page<ReviewDto> searchReview(String query, String type, Pageable pageable) {
@@ -128,6 +133,16 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
                 .orElseThrow(() -> new StoreException(StoreErrorCode.NOT_FOUND));
         PageRequest pageRequest = PageRequest.of(page, 10);
         Page<Review> result = reviewRepository.findAllByStore(store, pageRequest);
+
+        return ReviewConverter.toReviewListDTO(result);
+    }
+
+    @Override
+    public ReviewResDTO.ReviewListDTO findReviewByMemberId(Long memberId, Integer page) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<Review> result = reviewRepository.findAllByMember(member, pageRequest);
 
         return ReviewConverter.toReviewListDTO(result);
     }

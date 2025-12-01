@@ -6,7 +6,6 @@ import com.example.umc9th.domain.review.dto.ReviewResDTO;
 import com.example.umc9th.domain.review.exception.code.ReviewSuccessCode;
 import com.example.umc9th.domain.review.service.query.ReviewQueryService;
 import com.example.umc9th.domain.review.service.command.ReviewCommandService;
-import com.example.umc9th.global.annotation.ExistStoreId;
 import com.example.umc9th.global.apiPayload.ApiResponse;
 import com.example.umc9th.global.apiPayload.code.GeneralSuccessCode;
 import com.example.umc9th.global.config.PageRequest;
@@ -46,6 +45,17 @@ public class ReviewController implements ReviewControllerDocs{
     ) {
         ReviewSuccessCode code = ReviewSuccessCode.FOUND;
         return ApiResponse.onSuccess(code, reviewQueryService.findReviewByStoreId(storeId, page));
+    }
+
+    // 내가 작성한 리뷰 목록 이미 있지만, 연습 용으로 새롭게 구현
+    @Override
+    @GetMapping("/user/{memberId}/reviews/")
+    public ApiResponse<ReviewResDTO.ReviewListDTO> getReviewsByMemberId(
+            @PathVariable Long memberId,
+            @RequestParam(defaultValue = "1") Integer page
+    ) {
+        ReviewSuccessCode code = ReviewSuccessCode.FOUND;
+        return ApiResponse.onSuccess(code, reviewQueryService.findReviewByMemberId(memberId, page));
     }
 
     @GetMapping("/reviews/search")

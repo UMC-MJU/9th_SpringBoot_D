@@ -16,4 +16,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewQue
     Page<Review> findAllByStore(Store store, PageRequest pageRequest);
     // 작성한 리뷰(내가 작성한 리뷰 페이지)
     List<Review> findByMemberAndStoreAndDeletedAtIsNull(Member member, Store store);
+
+    Page<Review> findAllByMember(Member member, PageRequest pageRequest);
 }

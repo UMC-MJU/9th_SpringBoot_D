@@ -1,5 +1,6 @@
 package com.example.umc9th.domain.mission.repository;
 
+import com.example.umc9th.domain.member.entity.Member;
 import com.example.umc9th.domain.mission.entity.Mission;
 import com.example.umc9th.domain.mission.enums.MissionState; // Enum 임포트 유지
 import com.example.umc9th.domain.store.entity.Store;

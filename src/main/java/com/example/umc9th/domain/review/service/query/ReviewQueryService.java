@@ -11,4 +11,6 @@ public interface ReviewQueryService {
     Page<ReviewDto> searchReviewByMemberId(Long memberId, String query, String type, Pageable pageable);
 
     ReviewResDTO.ReviewPreViewListDTO findReview(String storeName, Integer page);
+
+    ReviewResDTO.ReviewListDTO findReviewByStoreId(Long storeId, Integer page);
 }

@@ -121,4 +121,14 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
 
         return ReviewConverter.toReviewPreviewListDTO(result);
     }
+
+    @Override
+    public ReviewResDTO.ReviewListDTO findReviewByStoreId(Long storeId, Integer page) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new StoreException(StoreErrorCode.NOT_FOUND));
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<Review> result = reviewRepository.findAllByStore(store, pageRequest);
+
+        return ReviewConverter.toReviewListDTO(result);
+    }
 }

@@ -57,4 +57,32 @@ public class ReviewConverter {
                 .createdAt(LocalDate.from(review.getCreatedAt()))
                 .build();
     }
+
+    public static ReviewResDTO.ReviewListDTO toReviewListDTO(
+            Page<Review> result
+    ) {
+        return ReviewResDTO.ReviewListDTO.builder()
+                .reviewList(result.getContent().stream()
+                        .map(ReviewConverter::toReviewDTO)
+                        .toList()
+                )
+                .listSize(result.getSize())
+                .totalPage(result.getTotalPages())
+                .totalElements(result.getTotalElements())
+                .isFirst(result.isFirst())
+                .isLast(result.isLast())
+                .build();
+    }
+
+    public static ReviewResDTO.ReviewDTO toReviewDTO(
+            Review review
+    ) {
+        return ReviewResDTO.ReviewDTO.builder()
+                .reviewId(review.getId())
+                .memberId(review.getMember().getId())
+                .star(review.getStar())
+                .comment(review.getComment())
+                .createdAt(review.getCreatedAt())
+                .build();
+    }
 }

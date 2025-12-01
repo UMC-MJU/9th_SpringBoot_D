@@ -6,14 +6,17 @@ import com.example.umc9th.domain.review.dto.ReviewResDTO;
 import com.example.umc9th.domain.review.exception.code.ReviewSuccessCode;
 import com.example.umc9th.domain.review.service.query.ReviewQueryService;
 import com.example.umc9th.domain.review.service.command.ReviewCommandService;
+import com.example.umc9th.global.annotation.ExistStoreId;
 import com.example.umc9th.global.apiPayload.ApiResponse;
 import com.example.umc9th.global.apiPayload.code.GeneralSuccessCode;
 import com.example.umc9th.global.config.PageRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@Validated
 @RestController
 public class ReviewController implements ReviewControllerDocs{
     private final ReviewQueryService reviewQueryService;
@@ -33,6 +36,18 @@ public class ReviewController implements ReviewControllerDocs{
         ReviewSuccessCode code = ReviewSuccessCode.FOUND;
         return ApiResponse.onSuccess(code, reviewQueryService.findReview(storeName, page));
     }
+
+    @Override
+    @GetMapping("/store/{storeId}/reviews/")
+    // 구현체에 유효성 검사 시 문제 발생
+    public ApiResponse<ReviewResDTO.ReviewListDTO>  getReviewsByStoreId(
+            @PathVariable Long storeId,
+            @RequestParam(defaultValue = "1") Integer page
+    ) {
+        ReviewSuccessCode code = ReviewSuccessCode.FOUND;
+        return ApiResponse.onSuccess(code, reviewQueryService.findReviewByStoreId(storeId, page));
+    }
+
     @GetMapping("/reviews/search")
     public ApiResponse<Page<ReviewDto>> searchReview(
             @RequestParam(required = false) String query,

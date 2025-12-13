@@ -23,4 +23,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findActiveMember(@Param("name") String name);
     //:name - 파라미터 연결
 
+    Optional<Member> findByEmail(String email);
+
 }

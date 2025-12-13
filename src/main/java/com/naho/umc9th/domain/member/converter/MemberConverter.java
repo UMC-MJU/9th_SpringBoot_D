@@ -1,5 +1,6 @@
 package com.naho.umc9th.domain.member.converter;
 
+import com.naho.umc9th.domain.common.auth.enums.Role;
 import com.naho.umc9th.domain.member.dto.MemberReqDto;
 import com.naho.umc9th.domain.member.dto.MemberResDTO;
 import com.naho.umc9th.domain.member.entity.Member;
@@ -26,11 +27,15 @@ public class MemberConverter {
 
     // DTO -> Entity
     public static Member toMember(
-            MemberReqDto.JoinDTO dto
+            MemberReqDto.JoinDTO dto,
+            String password,
+            Role role
     ){
         return Member.builder()
                 .name(dto.name())
                 .email(dto.email())
+                .password(password)
+                .role(role)
                 .phoneNumber(dto.phoneNumber())
                 .birthday(dto.birthday())
                 .address(dto.address())

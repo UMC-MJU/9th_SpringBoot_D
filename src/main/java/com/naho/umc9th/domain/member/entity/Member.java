@@ -1,5 +1,6 @@
 package com.naho.umc9th.domain.member.entity;
 
+import com.naho.umc9th.domain.common.auth.enums.Role;
 import com.naho.umc9th.domain.common.entity.BaseEntity;
 import com.naho.umc9th.domain.member.enums.Gender;
 import com.naho.umc9th.domain.member.enums.Provider;
@@ -34,6 +35,12 @@ public class Member extends BaseEntity {
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)

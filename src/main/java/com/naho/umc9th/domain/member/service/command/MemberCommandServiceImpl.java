@@ -2,6 +2,7 @@ package com.naho.umc9th.domain.member.service.command;
 
 import com.naho.umc9th.domain.common.apiPayload.code.GeneralErrorCode;
 import com.naho.umc9th.domain.common.apiPayload.exception.GeneralException;
+import com.naho.umc9th.domain.common.auth.enums.Role;
 import com.naho.umc9th.domain.member.converter.MemberConverter;
 import com.naho.umc9th.domain.member.dto.MemberReqDto;
 import com.naho.umc9th.domain.member.dto.MemberResDTO;
@@ -12,6 +13,7 @@ import com.naho.umc9th.domain.member.repository.FoodCategoryRepository;
 import com.naho.umc9th.domain.member.repository.MemberPreferenceRepository;
 import com.naho.umc9th.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,13 +26,16 @@ public class MemberCommandServiceImpl implements MemberCommandService{
     private final MemberRepository memberRepository;
     private final FoodCategoryRepository foodCategoryRepository;
     private final MemberPreferenceRepository memberPreferenceRepository;
+    private final PasswordEncoder passwordEncoder;
 
     //회원가입
     public MemberResDTO.JoinDTO signup(
             MemberReqDto.JoinDTO dto
     ){
+        String salt = passwordEncoder.encode(dto.password());
+
         // 사용자 생성
-        Member member = MemberConverter.toMember(dto);
+        Member member = MemberConverter.toMember(dto, salt, Role.ROLE_USER);
 
         //DB 적용
         memberRepository.save(member);

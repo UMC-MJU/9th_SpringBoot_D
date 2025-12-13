@@ -10,6 +10,7 @@ public class MemberReqDto {
     public record JoinDTO(
             String name,
             String email,
+            String password,
             String phoneNumber,
             Gender gender,
             LocalDate birthday,

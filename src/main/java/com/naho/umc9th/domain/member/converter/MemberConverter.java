@@ -25,6 +25,15 @@ public class MemberConverter {
                 .build();
     }
 
+    public static MemberResDTO.LoginDTO toLoginDTO(
+            Member member, String accessToken
+    ){
+        return MemberResDTO.LoginDTO.builder()
+                .memberId(member.getId())
+                .accessToken(accessToken)
+                .build();
+    }
+
     // DTO -> Entity
     public static Member toMember(
             MemberReqDto.JoinDTO dto,

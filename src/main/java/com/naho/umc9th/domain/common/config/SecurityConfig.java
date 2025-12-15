@@ -1,11 +1,16 @@
 package com.naho.umc9th.domain.common.config;
 
+import com.naho.umc9th.domain.common.auth.AuthenticationEntryPointImpl;
+import com.naho.umc9th.domain.common.auth.CustomUserDetailsService;
+import com.naho.umc9th.domain.common.jwt.JwtAuthFilter;
+import com.naho.umc9th.domain.common.jwt.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity // Spring Security 설정 활성화, 작성한 코드가 Spring Security 기본 설정보다 우선 적용
@@ -41,8 +46,18 @@ public class SecurityConfig {
     }
 
     @Bean
+    public JwtAuthFilter jwtAuthFilter(JwtUtil jwtUtil, CustomUserDetailsService customUserDetailsService) {
+        return new JwtAuthFilter(jwtUtil, customUserDetailsService);
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new AuthenticationEntryPointImpl();
     }
 
 

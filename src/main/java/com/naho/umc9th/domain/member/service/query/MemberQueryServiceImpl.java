@@ -1,6 +1,9 @@
 package com.naho.umc9th.domain.member.service.query;
 
+import com.naho.umc9th.domain.common.auth.CustomUserDetails;
+import com.naho.umc9th.domain.common.jwt.JwtUtil;
 import com.naho.umc9th.domain.member.converter.MemberConverter;
+import com.naho.umc9th.domain.member.dto.MemberReqDto;
 import com.naho.umc9th.domain.member.dto.MemberResDTO;
 import com.naho.umc9th.domain.member.entity.Member;
 import com.naho.umc9th.domain.member.exception.MemberException;
@@ -8,9 +11,12 @@ import com.naho.umc9th.domain.member.exception.code.MemberErrorCode;
 import com.naho.umc9th.domain.member.repository.MemberRepository;
 import com.naho.umc9th.domain.review.entity.Review;
 import com.naho.umc9th.domain.review.repository.ReviewRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +27,8 @@ public class MemberQueryServiceImpl implements MemberQueryService{
 
     private final MemberRepository memberRepository;
     private final ReviewRepository reviewRepository;
+    private final JwtUtil jwtUtil;
+    private final PasswordEncoder encoder;
 
 
     @Override
@@ -34,4 +42,29 @@ public class MemberQueryServiceImpl implements MemberQueryService{
 
         return MemberConverter.toReviewPreViewListDTO(memberPage);
     }
+
+    @Override
+    public MemberResDTO.LoginDTO login(
+            @Valid MemberReqDto.LoginDTO dto
+    ) {
+        //Member 조회
+        Member member = memberRepository.findByEmail(dto.email())
+                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
+
+        //비밀번호 검증
+        if(!encoder.matches(dto.password(), member.getPassword())){
+            throw new MemberException(MemberErrorCode.INVALID);
+        }
+
+        // JWT 토큰 발급용 UserDetails
+        CustomUserDetails userDetails = new CustomUserDetails(member);
+
+        // 엑세스 토큰 발급
+        String accessToken = jwtUtil.createAccessToken(userDetails);
+
+        // DTO 조립
+        return MemberConverter.toLoginDTO(member, accessToken);
+    }
+
+
 }

@@ -1,9 +1,6 @@
 package com.naho.umc9th.domain.member.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,4 +41,11 @@ public class MemberResDTO {
         String ownerReply;
         List<String> imageList;
     }
+
+    //로그인
+    @Builder
+    public record LoginDTO(
+            Long memberId,
+            String accessToken
+    ){}
 }

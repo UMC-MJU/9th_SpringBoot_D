@@ -10,4 +10,10 @@ public class MemberResDTO {
       Long memberId,
       LocalDateTime createdAt
     ){}
+
+    @Builder
+    public record LoginDTO(
+            Long memberId,
+            String accessToken
+    ){}
 }

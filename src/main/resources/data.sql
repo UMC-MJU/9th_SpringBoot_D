@@ -41,14 +41,14 @@ VALUES (502, 33333, '부산', '해운대구', '해변로', '우동', '해운대�
 
 -- 4. MEMBER 테이블 데이터 (회원 정보)
 -- gender ENUM: ('FEMALE','MALE','NONE'), social_type ENUM: ('APPLE','GOOGLE','KAKAO','NAVER')
-INSERT INTO member (id, address_id, point, name, password, birth, email, phone, gender, social_type, created_at, updated_at, deleted_at)
-VALUES (1000, 500, 1000, '테스트회원1', "testdata", '1995-05-15', 'test1@umc.com', '010-1234-5678', 'FEMALE', 'KAKAO', NOW(), NOW(), NULL);
+INSERT INTO member (id, address_id, role, point, name, password, birth, email, phone, gender, social_type, created_at, updated_at, deleted_at)
+VALUES (1000, 500, "ROLE_ADMIN",1000, '박수현', "$2a$10$sfy4aMVWHzbDG6CLyNQieu3jTJCcMnPtqG/v9nRJrfAjh/ktghxKO", '2003-10-23', 'test@email.com', '010-1234-5678', 'MALE', 'KAKAO', NOW(), NOW(), NULL);
 
-INSERT INTO member (id, address_id, point, name, password, birth, email, phone, gender, social_type, created_at, updated_at, deleted_at)
-VALUES (1001, 501, 500, '테스트회원2', "testdata", '1998-12-01', 'test2@umc.com', NULL, 'MALE', 'GOOGLE', NOW(), NOW(), NULL);
+INSERT INTO member (id, address_id, role, point, name, password, birth, email, phone, gender, social_type, created_at, updated_at, deleted_at)
+VALUES (1001, 501, "ROLE_USER",500, '테스트회원2', "$2a$10$sfy4aMVWHzbDG6CLyNQieu3jTJCcMnPtqG/v9nRJrfAjh/ktghxKO", '1998-12-01', 'test2@umc.com', NULL, 'MALE', 'GOOGLE', NOW(), NOW(), NULL);
 
-INSERT INTO member (id, address_id, point, name, password, birth, email, phone, gender, social_type, created_at, updated_at, deleted_at)
-VALUES (1002, 502, 200, '신규회원3', "testdata", '2000-01-01', 'newuser3@umc.com', '010-5555-5555', 'NONE', 'NAVER', NOW(), NOW(), NULL);
+INSERT INTO member (id, address_id, role, point, name, password, birth, email, phone, gender, social_type, created_at, updated_at, deleted_at)
+VALUES (1002, 502, "ROLE_USER",200, '신규회원3', "$2a$10$sfy4aMVWHzbDG6CLyNQieu3jTJCcMnPtqG/v9nRJrfAjh/ktghxKO", '2000-01-01', 'newuser3@umc.com', '010-5555-5555', 'NONE', 'NAVER', NOW(), NOW(), NULL);
 
 
 -- 5. STORE 테이블 데이터 (가게 정보)

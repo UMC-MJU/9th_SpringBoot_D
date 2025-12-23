@@ -13,6 +13,8 @@ public class MemberReqDTO {
     public record JoinDTO(
             @NotNull(message = "이메일은 필수 입력 값입니다.")
             String email,
+            @NotBlank(message = "비밀번호는 빈 칸이 될 수 없습니다.")
+            String password,
             @NotNull(message = "전화번호는 필수 입력 값입니다.")
             @Pattern(regexp = "01(?:0|1|[6~9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$")
             String phone,
